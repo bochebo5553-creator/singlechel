@@ -1,0 +1,13 @@
+{
+  "name": "singlechel",
+  "version": "1.0.0",
+  "description": "SingleChel - Telegram Mini App for singles events",
+  "scripts": {
+    "backend": "cd backend && node server.js",
+    "dev": "cd backend && node server.js",
+    "setup": "cd backend && npm install && cd ../frontend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "cd backend && NODE_ENV=production node server.js"
+  },
+  "license": "MIT"
+}

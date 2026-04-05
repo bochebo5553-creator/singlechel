@@ -1,0 +1,110 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { api, getTelegramUser, initTelegram } from './api.js';
+import RegisterScreen from './pages/Register.jsx';
+import MainScreen from './pages/Main.jsx';
+import EventScreen from './pages/Event.jsx';
+import TariffsScreen from './pages/Tariffs.jsx';
+import PaymentScreen from './pages/Payment.jsx';
+import ProfileScreen from './pages/Profile.jsx';
+import ProfileEditScreen from './pages/ProfileEdit.jsx';
+import UserProfileScreen from './pages/UserProfile.jsx';
+import CatalogScreen from './pages/Catalog.jsx';
+import PageScreen from './pages/PageView.jsx';
+import SupportScreen from './pages/Support.jsx';
+import InviteScreen from './pages/Invite.jsx';
+
+export default function App() {
+  const [screen, setScreen] = useState('loading');
+  const [user, setUser] = useState(null);
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(1);
+  const [screenParams, setScreenParams] = useState({});
+  const [history, setHistory] = useState([]);
+  const [notification, setNotification] = useState(null);
+
+  const showNotice = useCallback((text, type = 'info') => {
+    setNotification({ text, type });
+    setTimeout(() => setNotification(null), 3000);
+  }, []);
+
+  const navigate = useCallback((s, params = {}) => {
+    setHistory(h => [...h, { screen, params: screenParams }]);
+    setScreen(s);
+    setScreenParams(params);
+    window.scrollTo(0, 0);
+  }, [screen, screenParams]);
+
+  const goBack = useCallback(() => {
+    if (history.length > 0) {
+      const prev = history[history.length - 1];
+      setHistory(h => h.slice(0, -1));
+      setScreen(prev.screen);
+      setScreenParams(prev.params);
+    } else {
+      setScreen('main');
+      setScreenParams({});
+    }
+  }, [history]);
+
+  useEffect(() => {
+    initTelegram();
+    const tg = window.Telegram?.WebApp;
+    if (tg) tg.BackButton.onClick(() => goBack());
+    loadInitial();
+  }, []);
+
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      if (screen !== 'main' && screen !== 'loading' && screen !== 'register') tg.BackButton.show();
+      else tg.BackButton.hide();
+    }
+  }, [screen]);
+
+  async function loadInitial() {
+    try {
+      const [userData, citiesData] = await Promise.all([api.get('/api/auth/me'), api.get('/api/cities')]);
+      setCities(citiesData.cities || []);
+      if (userData.user && userData.user.is_registered) {
+        setUser(userData.user);
+        setSelectedCity(userData.user.city_id || 1);
+        setScreen('main');
+      } else setScreen('register');
+    } catch { setScreen('register'); }
+  }
+
+  function refreshUser() {
+    api.get('/api/auth/me').then(d => { if (d.user) setUser(d.user); });
+  }
+
+  const props = { user, setUser, navigate, goBack, cities, selectedCity, setSelectedCity, screenParams, refreshUser, showNotice };
+
+  if (screen === 'loading') {
+    return <div className="screen" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <div style={{ textAlign: 'center' }}>
+        <div className="spinner" style={{ margin: '0 auto 16px' }} />
+        <p className="text-muted">Загрузка...</p>
+      </div>
+    </div>;
+  }
+
+  return <>
+    {notification && (
+      <div style={{ position: 'fixed', top: 12, left: '50%', transform: 'translateX(-50%)', zIndex: 999, padding: '10px 20px', borderRadius: 10, fontWeight: 700, fontSize: 13, fontFamily: 'var(--font)', animation: 'fadeIn 0.3s', background: notification.type === 'error' ? '#ff5e7a' : notification.type === 'success' ? '#34d399' : '#60a5fa', color: 'white', maxWidth: '90%', textAlign: 'center' }}>
+        {notification.text}
+      </div>
+    )}
+    {screen === 'register' && <RegisterScreen {...props} />}
+    {screen === 'main' && <MainScreen {...props} />}
+    {screen === 'event' && <EventScreen {...props} />}
+    {screen === 'tariffs' && <TariffsScreen {...props} />}
+    {screen === 'payment' && <PaymentScreen {...props} />}
+    {screen === 'profile' && <ProfileScreen {...props} />}
+    {screen === 'profile-edit' && <ProfileEditScreen {...props} />}
+    {screen === 'user-profile' && <UserProfileScreen {...props} />}
+    {screen === 'catalog' && <CatalogScreen {...props} />}
+    {screen === 'page' && <PageScreen {...props} />}
+    {screen === 'support' && <SupportScreen {...props} />}
+    {screen === 'invite' && <InviteScreen {...props} />}
+  </>;
+}

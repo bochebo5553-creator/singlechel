@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SingleChel — Админ</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f13;--bg2:#1a1a24;--bg3:#222233;--a:#ff5e7a;--a2:#ff3d60;--t:#f0eff4;--m:#9090a7;--d:#5e5e74;--bd:#2a2a3d;--ok:#34d399;--w:#fbbf24;--bl:#60a5fa;--f:'Nunito',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--f);background:var(--bg);color:var(--t);min-height:100vh}
+.ly{display:flex;min-height:100vh}.sb{width:200px;background:var(--bg2);border-right:1px solid var(--bd);padding:14px 0;position:fixed;height:100vh;overflow-y:auto}
+.sb h1{font-size:15px;padding:0 14px 14px;color:var(--a);font-weight:800;border-bottom:1px solid var(--bd);margin-bottom:6px}
+.ni{display:block;padding:9px 14px;color:var(--m);font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--f);transition:.15s}
+.ni:hover,.ni.ac{color:var(--t);background:rgba(255,94,122,.08)}.ni.ac{border-right:3px solid var(--a)}
+.mn{margin-left:200px;flex:1;padding:20px;max-width:1000px}
+.tb{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.cd{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}.tbl th{text-align:left;padding:7px 8px;background:var(--bg3);color:var(--m);font-weight:600;border-bottom:1px solid var(--bd);white-space:nowrap}
+.tbl td{padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:top}.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.bt{padding:6px 12px;border:none;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
+.bt:active{transform:scale(.96)}.bp{background:var(--a);color:#fff}.bp:hover{background:var(--a2)}.bs{background:var(--bg3);color:var(--t);border:1px solid var(--bd)}
+.bd{background:transparent;color:var(--a);border:1px solid var(--a)}.bg{background:var(--ok);color:#fff}.bw{background:var(--w);color:#000}
+.in{width:100%;padding:8px 10px;background:#1e1e2e;border:1px solid var(--bd);border-radius:6px;color:var(--t);font-family:var(--f);font-size:12px;outline:none;margin-bottom:8px}
+.in:focus{border-color:var(--a)}select.in{appearance:auto}textarea.in{min-height:80px;resize:vertical}
+.lb{display:block;font-size:10px;color:var(--m);font-weight:600;margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px}
+.rw{display:flex;gap:8px}.rw>*{flex:1}
+.bg2{display:inline-block;padding:2px 6px;border-radius:16px;font-size:10px;font-weight:700}
+.bg-g{background:rgba(52,211,153,.15);color:var(--ok)}.bg-y{background:rgba(251,191,36,.15);color:var(--w)}.bg-r{background:rgba(255,94,122,.12);color:var(--a)}.bg-b{background:rgba(96,165,250,.15);color:var(--bl)}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:100}
+.mdl{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:18px;width:92%;max-width:560px;max-height:85vh;overflow-y:auto}
+.mdl h2{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px}
+.st{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center}
+.st .n{font-size:22px;font-weight:800;color:var(--a)}.st .l{font-size:10px;color:var(--m);margin-top:1px}
+.tst{position:fixed;top:14px;right:14px;padding:9px 16px;border-radius:8px;font-weight:700;font-size:12px;z-index:200;animation:fi .3s;color:#fff;max-width:320px}
+.tst-ok{background:var(--ok)}.tst-er{background:var(--a)}.tst-in{background:var(--bl)}
+.tag{display:inline-block;padding:1px 5px;margin:1px;background:var(--bg3);border-radius:3px;font-size:10px;color:var(--m)}
+.acts{display:flex;gap:5px;flex-wrap:wrap}
+.prev{width:60px;height:40px;border-radius:4px;object-fit:cover;border:1px solid var(--bd)}
+@keyframes fi{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.sb{display:none}.mn{margin-left:0;padding:10px}.sts{grid-template-columns:1fr 1fr}.rw{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const H={'Content-Type':'application/json','X-Dev-User-Id':'123456789'},HU={'X-Dev-User-Id':'123456789'};
+async function GET(u){return(await fetch(u,{headers:H})).json()}
+async function POST(u,b){return(await fetch(u,{method:'POST',headers:H,body:JSON.stringify(b)})).json()}
+async function PUT(u,b){return(await fetch(u,{method:'PUT',headers:H,body:JSON.stringify(b)})).json()}
+async function DEL(u){return(await fetch(u,{method:'DELETE',headers:H})).json()}
+async function UPL(u,fd){return(await fetch(u,{method:'POST',headers:HU,body:fd})).json()}
+
+let S={tab:'events',events:[],users:[],cities:[],tariffs:[],toast:null,userSearch:'',userCity:'',eventCity:''},M=null;
+
+function toast(m,t='ok'){S.toast={m,t};render();setTimeout(()=>{S.toast=null;render()},3000)}
+function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+function fmt(d){if(!d)return'—';return new Date(d).toLocaleString('ru-RU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function setTab(t){S.tab=t;M=null;render()}
+
+async function load(){
+  try{const[e,u,c,t]=await Promise.all([GET('/api/admin/events'+(S.eventCity?'?city_id='+S.eventCity:'')),GET('/api/admin/users?'+(S.userSearch?'search='+encodeURIComponent(S.userSearch)+'&':'')+(S.userCity?'city_id='+S.userCity:'')),GET('/api/cities'),GET('/api/admin/tariffs')]);
+  S.events=e.events||[];S.users=u.users||[];S.cities=c.cities||[];S.tariffs=t.tariffs||[];}catch(e){console.error(e)}render()}
+
+// ===== EVENTS =====
+function rEvents(){
+  return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">📅 Мероприятия (${S.events.length})</h2><div class="acts">
+    <select class="in" style="width:auto;margin:0;padding:5px 8px;font-size:11px" onchange="S.eventCity=this.value;load()"><option value="">Все города</option>${S.cities.map(c=>`<option value="${c.id}" ${S.eventCity==c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
+    <button class="bt bg" onclick="window.open('/api/admin/export/events'+(S.eventCity?'?city_id='+S.eventCity:''))">📥 CSV</button>
+    <button class="bt bp" onclick="oEvM()">+ Создать</button></div></div>
+  ${S.events.map(e=>`<div class="cd"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+    ${e.image_url&&e.image_url!=='/uploads/event-default.jpg'?`<img src="${esc(e.image_url)}" class="prev">`:''}
+    <div style="flex:1;min-width:180px"><div style="font-size:14px;font-weight:700">${esc(e.title)}</div>
+    <div style="font-size:11px;color:var(--m)">${fmt(e.date)} • ${esc(e.city_name||'—')}</div>
+    <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap"><span class="bg2 ${e.is_free?'bg-g':'bg-y'}">${e.is_free?'Бесплатно':e.price+' ₽'}</span><span class="bg2 bg-b">👥${e.participant_count||0}${e.participant_limit>0?'/'+e.participant_limit:''}</span>${e.is_active?'':'<span class="bg2 bg-r">Скрыто</span>'}</div></div>
+    <div class="acts"><button class="bt bs" onclick="oEvM(${e.id})">✏️</button><button class="bt bs" onclick="vPart(${e.id})">👥</button><button class="bt bd" onclick="if(confirm('Удалить?'))dEv(${e.id})">🗑</button></div>
+  </div></div>`).join('')}`;
+}
+
+function oEvM(id){const ev=id?S.events.find(e=>e.id===id):null;M={t:'ev',d:ev?{...ev}:{title:'',description:'',date:'',address:'',map_link:'',price:0,is_free:true,participant_limit:0,city_id:1,is_active:true}};render()}
+
+async function sEv(){const d=M.d,fd=new FormData();fd.append('title',d.title||'');fd.append('description',d.description||'');fd.append('date',d.date||'');fd.append('address',d.address||'');fd.append('map_link',d.map_link||'');fd.append('is_free',d.is_free?'true':'false');fd.append('price',d.is_free?'0':String(d.price||0));fd.append('participant_limit',String(d.participant_limit||0));fd.append('city_id',String(d.city_id||1));fd.append('is_active',d.is_active!==false?'true':'false');
+const f=document.getElementById('ev-img');if(f?.files?.[0])fd.append('image',f.files[0]);
+if(d.id)await UPL('/api/admin/events/'+d.id,fd);else await UPL('/api/admin/events',fd);M=null;toast('Мероприятие сохранено!');load()}
+
+async function dEv(id){await DEL('/api/admin/events/'+id);toast('Удалено');load()}
+
+async function vPart(eid){const d=await GET('/api/admin/events/'+eid+'/participants');const ev=S.events.find(e=>e.id===eid);M={t:'part',eid,en:ev?.title,ps:d.participants||[]};render()}
+async function rmPart(eid,uid){await DEL('/api/admin/events/'+eid+'/participants/'+uid);toast('Участник удалён');vPart(eid)}
+
+// ===== USERS =====
+function rUsers(){
+  return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">👥 Пользователи (${S.users.length})</h2><div class="acts">
+    <button class="bt bg" onclick="window.open('/api/admin/export/users?'+(S.userSearch?'search='+encodeURIComponent(S.userSearch)+'&':'')+(S.userCity?'city_id='+S.userCity:''))">📥 CSV</button></div></div>
+  <div class="rw" style="margin-bottom:12px">
+    <input class="in" style="margin:0;flex:2" placeholder="Поиск по имени, нику, телефону..." value="${esc(S.userSearch)}" oninput="S.userSearch=this.value" onkeydown="if(event.key==='Enter')load()">
+    <select class="in" style="margin:0;flex:1" onchange="S.userCity=this.value;load()"><option value="">Все города</option>${S.cities.map(c=>`<option value="${c.id}" ${S.userCity==c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
+    <button class="bt bp" onclick="load()" style="flex:0 0 auto">🔍</button>
+  </div>
+  ${S.users.length===0?'<div class="cd"><p style="color:var(--m)">Не найдено</p></div>':''}
+  ${S.users.map(u=>`<div class="cd"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+    <div style="width:36px;height:36px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--a);flex-shrink:0;font-size:14px;overflow:hidden">
+      ${u.photo_url||u.avatar_url?`<img src="${esc(u.photo_url||u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:(u.full_name||'?').charAt(0).toUpperCase()}</div>
+    <div style="flex:1;min-width:160px">
+      <div style="font-weight:700;font-size:13px">${esc(u.full_name)} ${u.is_admin?'<span class="bg2 bg-y">Админ</span>':''}</div>
+      <div style="font-size:11px;color:var(--m)">@${esc(u.username||'—')} • ${esc(u.city_name||'—')} • ${esc(u.phone||'—')}</div>
+      <div style="font-size:11px;color:var(--d);margin-top:2px">Тариф: <span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[u.tariff]||'bg-r'}">${{free:'Бесплатный',tier1:'Уровень 1',tier2:'Уровень 2'}[u.tariff]||u.tariff}</span>${u.tariff_expires?' до '+fmt(u.tariff_expires):''}</div>
+      ${u.events?.length?`<div style="margin-top:3px">${u.events.map(ev=>`<span class="tag">${esc(ev.title)} <span class="bg2 ${ev.status==='registered'?'bg-g':'bg-r'}" style="font-size:8px">${ev.status==='registered'?'✓':'✕'}</span></span>`).join('')}</div>`:''}
+    </div>
+    <div class="acts" style="flex-shrink:0">
+      <button class="bt bs" onclick="oUM(${u.id})">👁</button>
+      <select class="in" style="width:auto;margin:0;padding:3px 6px;font-size:10px" onchange="chT(${u.id},this.value)">
+        <option value="free" ${u.tariff==='free'?'selected':''}>Бесплатный</option>
+        <option value="tier1" ${u.tariff==='tier1'?'selected':''}>Ур.1</option>
+        <option value="tier2" ${u.tariff==='tier2'?'selected':''}>Ур.2</option></select>
+      <button class="bt ${u.is_admin?'bd':'bs'}" onclick="tgA(${u.id},${u.is_admin?0:1})">${u.is_admin?'−А':'+А'}</button>
+    </div></div></div>`).join('')}`;
+}
+
+function oUM(uid){const u=S.users.find(x=>x.id===uid);if(!u)return;M={t:'ud',u};render()}
+async function chT(uid,t){await PUT('/api/admin/users/'+uid+'/tariff',{tariff:t});toast('Тариф обновлён');load()}
+async function tgA(uid,v){await PUT('/api/admin/users/'+uid+'/admin',{is_admin:v});toast(v?'Админ назначен':'Админ снят');load()}
+async function sndN(uid){const el=document.getElementById('nm-'+uid);const msg=el?el.value:prompt('Текст:');if(!msg)return;const r=await POST('/api/admin/notify',{user_id:uid,message:msg});if(r.success)toast('Уведомление отправлено');else toast(r.error||'Ошибка','er');if(el)el.value=''}
+
+// ===== TARIFFS =====
+function rTariffs(){
+  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">⭐ Управление тарифами</h2>
+  ${S.tariffs.map(t=>`<div class="cd"><div class="rw" style="align-items:flex-end;flex-wrap:wrap">
+    <div style="flex:2;min-width:120px"><label class="lb">Название</label><input class="in" id="tn${t.id}" value="${esc(t.name)}" style="margin:0"></div>
+    <div><label class="lb">Тип</label><input class="in" value="${t.tier}" disabled style="margin:0;background:var(--bg3)"></div>
+    <div><label class="lb">₽/мес</label><input class="in" type="number" id="tp${t.id}" value="${t.price_monthly}" style="margin:0" ${t.tier==='free'?'disabled':''}></div>
+    <div><label class="lb">₽/год</label><input class="in" type="number" id="ty${t.id}" value="${t.price_yearly}" style="margin:0" ${t.tier==='free'?'disabled':''}></div>
+    <div style="flex:0 0 auto"><button class="bt bp" onclick="sT(${t.id})" ${t.tier==='free'?'disabled':''}>💾</button></div>
+  </div><div style="margin-top:6px;font-size:11px;color:var(--m)">Возможности: ${(t.features||[]).join(', ')}</div></div>`).join('')}`;
+}
+async function sT(id){const n=document.getElementById('tn'+id)?.value,pm=document.getElementById('tp'+id)?.value,py=document.getElementById('ty'+id)?.value;
+await PUT('/api/admin/tariffs/'+id,{name:n,price_monthly:parseFloat(pm),price_yearly:parseFloat(py)});toast('Тариф обновлён');load()}
+
+// ===== PAGES =====
+function rPages(){
+  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">📄 Страницы</h2>
+  <p style="font-size:12px;color:var(--m);margin-bottom:12px">Для вставки изображений: загрузите через кнопку, скопируйте ссылку, вставьте в HTML как &lt;img src="ссылка"&gt;</p>
+  <div class="cd" style="margin-bottom:16px"><label class="lb">Загрузить изображение для страниц</label>
+    <input type="file" id="pg-file" accept="image/*" class="in" style="padding:6px">
+    <button class="bt bp" onclick="uplPgImg()">📤 Загрузить</button>
+    <div id="pg-img-result" style="margin-top:6px;font-size:11px"></div></div>
+  ${['about','rules','policy','support','consent_notifications'].map(s=>`
+    <div class="cd" style="cursor:pointer" onclick="oPM('${s}')"><div style="display:flex;justify-content:space-between;align-items:center">
+      <div><div style="font-weight:700;font-size:13px">${{about:'О нас',rules:'Правила',policy:'Политика конфиденциальности',support:'Служба заботы',consent_notifications:'Текст согласия на уведомления'}[s]}</div>
+      <div style="font-size:10px;color:var(--d)">/${s}</div></div>
+      <button class="bt bs">✏️</button></div></div>`).join('')}`;
+}
+
+async function uplPgImg(){const f=document.getElementById('pg-file');if(!f?.files?.[0]){toast('Выберите файл','er');return}
+const fd=new FormData();fd.append('file',f.files[0]);const r=await UPL('/api/admin/upload',fd);
+if(r.url){document.getElementById('pg-img-result').innerHTML=`✅ Ссылка: <code style="background:var(--bg3);padding:2px 6px;border-radius:3px;user-select:all">${r.url}</code> <br>HTML: <code style="background:var(--bg3);padding:2px 6px;border-radius:3px;user-select:all">&lt;img src="${r.url}" style="max-width:100%"&gt;</code>`;toast('Изображение загружено')}
+else toast('Ошибка загрузки','er')}
+
+async function oPM(slug){const d=await GET('/api/pages/'+slug);M={t:'pg',slug,pg:d.page||{title:slug,content:''}};render()}
+async function sPg(){const t=document.getElementById('pt').value,c=document.getElementById('pc').value;await PUT('/api/admin/pages/'+M.slug,{title:t,content:c});M=null;toast('Страница сохранена')}
+
+// ===== CITIES =====
+function rCities(){
+  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">🏙 Города (${S.cities.length})</h2><div class="cd">
+    <div class="rw" style="margin-bottom:12px;align-items:flex-end"><div style="flex:1"><label class="lb">Новый город</label><input class="in" id="nc" placeholder="Название" style="margin:0"></div>
+    <div style="flex:0 0 auto"><button class="bt bp" onclick="aC()">+ Добавить</button></div></div>
+    ${S.cities.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd)">
+      <span style="font-weight:600;font-size:13px">📍 ${esc(c.name)}</span>
+      ${c.id===1?'<span class="bg2 bg-g">По умолчанию</span>':`<button class="bt bd" onclick="if(confirm('Удалить?'))dC(${c.id})">🗑</button>`}
+    </div>`).join('')}</div>`;
+}
+async function aC(){const v=document.getElementById('nc')?.value?.trim();if(!v){toast('Введите название','er');return}const r=await POST('/api/admin/cities',{name:v});if(r.error){toast(r.error,'er');return}toast('Город добавлен');load()}
+async function dC(id){await DEL('/api/admin/cities/'+id);toast('Удалено');load()}
+
+// ===== MODALS =====
+function rModal(){
+  if(!M)return'';
+  const cls=`<button class="bt bs" onclick="M=null;render()" style="font-size:16px;line-height:1;padding:4px 8px">✕</button>`;
+
+  if(M.t==='ev'){const d=M.d,iF=d.is_free===true||d.is_free===1||d.is_free==='true';
+  return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
+    <h2>${d.id?'Редактировать':'Создать'} мероприятие ${cls}</h2>
+    <label class="lb">Название *</label><input class="in" value="${esc(d.title)}" oninput="M.d.title=this.value">
+    <label class="lb">Описание</label><textarea class="in" oninput="M.d.description=this.value">${esc(d.description||'')}</textarea>
+    <div class="rw"><div><label class="lb">Дата *</label><input class="in" type="datetime-local" value="${(d.date||'').replace(' ','T').slice(0,16)}" onchange="M.d.date=this.value"></div>
+    <div><label class="lb">Город</label><select class="in" onchange="M.d.city_id=+this.value">${S.cities.map(c=>`<option value="${c.id}" ${c.id==d.city_id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div></div>
+    <label class="lb">Адрес</label><input class="in" value="${esc(d.address||'')}" oninput="M.d.address=this.value">
+    <label class="lb">Ссылка на карту</label><input class="in" value="${esc(d.map_link||'')}" oninput="M.d.map_link=this.value">
+    <div style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px;background:var(--bg3);border-radius:6px">
+      <label style="font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px">
+        <input type="checkbox" ${iF?'checked':''} onchange="M.d.is_free=this.checked;if(this.checked)M.d.price=0;render()"> Бесплатное</label></div>
+    ${!iF?`<div class="rw"><div><label class="lb">Цена ₽ *</label><input class="in" type="number" value="${d.price||0}" oninput="M.d.price=+this.value||0" min="0"></div>
+    <div><label class="lb">Онлайн (-15%)</label><input class="in" value="${Math.round((d.price||0)*.85)} ₽" disabled style="background:var(--bg3)"></div></div>`:''}
+    <label class="lb">Лимит мест (0=без)</label><input class="in" type="number" value="${d.participant_limit||0}" oninput="M.d.participant_limit=+this.value||0" min="0">
+    ${d.image_url&&d.image_url!=='/uploads/event-default.jpg'?`<div style="margin-bottom:8px"><label class="lb">Текущее фото</label><img src="${esc(d.image_url)}" style="max-width:100%;max-height:120px;border-radius:6px;border:1px solid var(--bd)"></div>`:''}
+    <label class="lb">Изображение</label><input class="in" type="file" id="ev-img" accept="image/*" style="padding:6px">
+    <div style="display:flex;align-items:center;gap:6px;margin:6px 0"><input type="checkbox" id="ev-ac" ${d.is_active!==false&&d.is_active!==0?'checked':''} onchange="M.d.is_active=this.checked"><label for="ev-ac" style="font-size:12px">Активно</label></div>
+    <div class="acts" style="margin-top:10px"><button class="bt bp" onclick="sEv()">💾 Сохранить</button><button class="bt bs" onclick="M=null;render()">Отмена</button></div>
+  </div></div>`}
+
+  if(M.t==='part'){return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
+    <h2>👥 ${esc(M.en)} ${cls}</h2>
+    ${M.ps.length===0?'<p style="color:var(--m);padding:10px 0">Нет участников</p>':`
+    <table class="tbl"><thead><tr><th>Имя</th><th>Тариф</th><th>Оплата</th><th>Статус</th><th>Дата</th><th></th></tr></thead><tbody>
+    ${M.ps.map(p=>`<tr><td><strong>${esc(p.full_name)}</strong><br><span style="color:var(--m)">@${esc(p.username||'—')}</span></td>
+    <td><span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[p.tariff]||'bg-r'}">${{free:'Бес',tier1:'Ур1',tier2:'Ур2'}[p.tariff]||'?'}</span></td>
+    <td style="font-size:11px">${esc(p.payment_method||'—')}</td>
+    <td><span class="bg2 ${p.status==='registered'?'bg-g':'bg-r'}">${p.status}</span></td>
+    <td style="font-size:10px;color:var(--m)">${fmt(p.joined_at)}</td>
+    <td><button class="bt bd" onclick="rmPart(${M.eid},${p.id})">✕</button></td></tr>`).join('')}</tbody></table>`}
+    <div style="margin-top:10px"><button class="bt bs" onclick="M=null;render()">Закрыть</button></div>
+  </div></div>`}
+
+  if(M.t==='ud'){const u=M.u;return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
+    <h2>Профиль ${cls}</h2>
+    <div style="display:flex;gap:10px;margin-bottom:12px;align-items:center">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--a);overflow:hidden;flex-shrink:0">
+        ${u.photo_url||u.avatar_url?`<img src="${esc(u.photo_url||u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:(u.full_name||'?').charAt(0).toUpperCase()}</div>
+      <div><div style="font-weight:700">${esc(u.full_name)} <span style="color:var(--m);font-weight:400">@${esc(u.username||'—')}</span></div>
+      <div style="font-size:11px;color:var(--m)">${esc(u.city_name||'—')} • Рег: ${fmt(u.created_at)}</div></div></div>
+    <table class="tbl" style="margin-bottom:12px">
+      <tr><td style="color:var(--m);width:100px">Телефон</td><td>${esc(u.phone||'—')}</td></tr>
+      <tr><td style="color:var(--m)">Email</td><td>${esc(u.email||'—')}</td></tr>
+      <tr><td style="color:var(--m)">Работа</td><td>${esc(u.work||'—')}</td></tr>
+      <tr><td style="color:var(--m)">Интересы</td><td>${esc(u.interests||'—')}</td></tr>
+      <tr><td style="color:var(--m)">Соцсети</td><td>${esc(u.social_links||'—')}</td></tr>
+      <tr><td style="color:var(--m)">О себе</td><td>${esc(u.about||'—')}</td></tr>
+      <tr><td style="color:var(--m)">Тариф</td><td><span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[u.tariff]}">${{free:'Бесплатный',tier1:'Уровень 1',tier2:'Уровень 2'}[u.tariff]}</span>${u.tariff_expires?' до '+fmt(u.tariff_expires):''}</td></tr>
+    </table>
+    ${u.events?.length?`<div style="margin-bottom:12px"><div style="font-weight:700;font-size:12px;margin-bottom:4px">Мероприятия (${u.events.length}):</div>${u.events.map(ev=>`<div style="padding:3px 0;font-size:11px;border-bottom:1px solid var(--bd)">📅 ${esc(ev.title)} — ${fmt(ev.date)} <span class="bg2 ${ev.status==='registered'?'bg-g':'bg-r'}">${ev.status}</span></div>`).join('')}</div>`:''}
+    <div style="margin-bottom:8px"><label class="lb">📨 Отправить уведомление в Telegram</label>
+    <div class="rw"><input class="in" id="nm-${u.id}" placeholder="Текст сообщения..." style="margin:0;flex:1"><button class="bt bg" onclick="sndN(${u.id})" style="flex:0 0 auto">Отправить</button></div></div>
+    <button class="bt bs" onclick="M=null;render()">Закрыть</button>
+  </div></div>`}
+
+  if(M.t==='pg'){const p=M.pg;return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
+    <h2>${esc(p.title)} ${cls}</h2>
+    <label class="lb">Заголовок</label><input class="in" id="pt" value="${esc(p.title)}">
+    <label class="lb">Контент (HTML — можно вставлять &lt;img src="..."&gt;)</label>
+    <textarea class="in" id="pc" style="min-height:180px">${esc(p.content||'')}</textarea>
+    <div class="acts" style="margin-top:8px"><button class="bt bp" onclick="sPg()">💾 Сохранить</button><button class="bt bs" onclick="M=null;render()">Отмена</button></div>
+  </div></div>`}
+  return''
+}
+
+// ===== RENDER =====
+function render(){
+  const tabs=[{id:'events',l:'📅 Мероприятия'},{id:'users',l:'👥 Пользователи'},{id:'tariffs',l:'⭐ Тарифы'},{id:'pages',l:'📄 Страницы'},{id:'cities',l:'🏙 Города'}];
+  let c='';
+  if(S.tab==='events')c=rEvents();else if(S.tab==='users')c=rUsers();else if(S.tab==='tariffs')c=rTariffs();else if(S.tab==='pages')c=rPages();else if(S.tab==='cities')c=rCities();
+
+  document.getElementById('app').innerHTML=`<div class="ly">
+    <div class="sb"><h1>🔧 SingleChel</h1>${tabs.map(t=>`<button class="ni ${S.tab===t.id?'ac':''}" onclick="setTab('${t.id}')">${t.l}</button>`).join('')}</div>
+    <div class="mn">
+      <div class="sts">
+        <div class="st"><div class="n">${S.events.length}</div><div class="l">Мероприятий</div></div>
+        <div class="st"><div class="n">${S.users.length}</div><div class="l">Пользователей</div></div>
+        <div class="st"><div class="n">${S.users.filter(u=>u.tariff!=='free').length}</div><div class="l">Платных</div></div>
+        <div class="st"><div class="n">${S.cities.length}</div><div class="l">Городов</div></div>
+      </div>${c}</div></div>
+    ${rModal()}
+    ${S.toast?`<div class="tst tst-${S.toast.t}">${esc(S.toast.m)}</div>`:''}`;
+}
+load();
+</script>
+</body>
+</html>
