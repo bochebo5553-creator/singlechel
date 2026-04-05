@@ -44,14 +44,49 @@
 <body>
 <div id="app"></div>
 <script>
-const H={'Content-Type':'application/json','X-Dev-User-Id':'123456789'},HU={'X-Dev-User-Id':'123456789'};
-async function GET(u){return(await fetch(u,{headers:H})).json()}
-async function POST(u,b){return(await fetch(u,{method:'POST',headers:H,body:JSON.stringify(b)})).json()}
-async function PUT(u,b){return(await fetch(u,{method:'PUT',headers:H,body:JSON.stringify(b)})).json()}
-async function DEL(u){return(await fetch(u,{method:'DELETE',headers:H})).json()}
-async function UPL(u,fd){return(await fetch(u,{method:'POST',headers:HU,body:fd})).json()}
+let ADMIN_SECRET = sessionStorage.getItem('admin_secret') || '';
 
-let S={tab:'events',events:[],users:[],cities:[],tariffs:[],toast:null,userSearch:'',userCity:'',eventCity:''},M=null;
+function getH(){return{'Content-Type':'application/json','X-Admin-Secret':ADMIN_SECRET}}
+function getHU(){return{'X-Admin-Secret':ADMIN_SECRET}}
+
+async function GET(u){const r=await fetch(u,{headers:getH()});if(r.status===401||r.status===403){showLogin('Сессия истекла. Введите пароль заново.');return{}}return r.json()}
+async function POST(u,b){const r=await fetch(u,{method:'POST',headers:getH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
+async function PUT(u,b){const r=await fetch(u,{method:'PUT',headers:getH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
+async function DEL(u){const r=await fetch(u,{method:'DELETE',headers:getH()});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
+async function UPL(u,fd){fd.append('_admin_secret',ADMIN_SECRET);const r=await fetch(u,{method:'POST',headers:getHU(),body:fd});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
+
+let S={tab:'events',events:[],users:[],cities:[],tariffs:[],toast:null,userSearch:'',userCity:'',eventCity:'',loggedIn:!!ADMIN_SECRET},M=null;
+
+function showLogin(msg=''){
+  S.loggedIn=false;ADMIN_SECRET='';sessionStorage.removeItem('admin_secret');
+  document.getElementById('app').innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px">
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:32px;width:100%;max-width:360px;text-align:center">
+        <h1 style="font-size:24px;font-weight:800;color:var(--a);margin-bottom:4px">🔧 SingleChel</h1>
+        <p style="color:var(--m);font-size:13px;margin-bottom:24px">Вход в админ-панель</p>
+        ${msg?`<div style="background:rgba(255,94,122,.12);color:var(--a);padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:16px">${msg}</div>`:''}
+        <input class="in" type="password" id="login-pw" placeholder="Пароль администратора" style="text-align:center;font-size:14px" onkeydown="if(event.key==='Enter')doLogin()">
+        <div style="height:12px"></div>
+        <button class="bt bp" style="width:100%;padding:12px;font-size:14px" onclick="doLogin()">Войти</button>
+        <p style="color:var(--d);font-size:11px;margin-top:16px">Пароль — это значение ADMIN_SECRET<br>из настроек вашего сервера</p>
+      </div>
+    </div>`;
+  setTimeout(()=>{const el=document.getElementById('login-pw');if(el)el.focus()},100);
+}
+
+async function doLogin(){
+  const pw=document.getElementById('login-pw')?.value;
+  if(!pw){showLogin('Введите пароль');return}
+  try{
+    const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:pw})});
+    if(r.ok){
+      ADMIN_SECRET=pw;sessionStorage.setItem('admin_secret',pw);S.loggedIn=true;
+      load();
+    }else{showLogin('Неверный пароль');}
+  }catch(e){showLogin('Ошибка подключения к серверу');}
+}
+
+function logout(){sessionStorage.removeItem('admin_secret');showLogin('Вы вышли из системы')}
 
 function toast(m,t='ok'){S.toast={m,t};render();setTimeout(()=>{S.toast=null;render()},3000)}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
@@ -66,7 +101,7 @@ async function load(){
 function rEvents(){
   return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">📅 Мероприятия (${S.events.length})</h2><div class="acts">
     <select class="in" style="width:auto;margin:0;padding:5px 8px;font-size:11px" onchange="S.eventCity=this.value;load()"><option value="">Все города</option>${S.cities.map(c=>`<option value="${c.id}" ${S.eventCity==c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
-    <button class="bt bg" onclick="window.open('/api/admin/export/events'+(S.eventCity?'?city_id='+S.eventCity:''))">📥 CSV</button>
+    <button class="bt bg" onclick="window.open('/api/admin/export/events?admin_secret='+encodeURIComponent(ADMIN_SECRET)+(S.eventCity?'&city_id='+S.eventCity:''))">📥 CSV</button>
     <button class="bt bp" onclick="oEvM()">+ Создать</button></div></div>
   ${S.events.map(e=>`<div class="cd"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
     ${e.image_url&&e.image_url!=='/uploads/event-default.jpg'?`<img src="${esc(e.image_url)}" class="prev">`:''}
@@ -91,7 +126,7 @@ async function rmPart(eid,uid){await DEL('/api/admin/events/'+eid+'/participants
 // ===== USERS =====
 function rUsers(){
   return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">👥 Пользователи (${S.users.length})</h2><div class="acts">
-    <button class="bt bg" onclick="window.open('/api/admin/export/users?'+(S.userSearch?'search='+encodeURIComponent(S.userSearch)+'&':'')+(S.userCity?'city_id='+S.userCity:''))">📥 CSV</button></div></div>
+    <button class="bt bg" onclick="window.open('/api/admin/export/users?admin_secret='+encodeURIComponent(ADMIN_SECRET)+'&'+(S.userSearch?'search='+encodeURIComponent(S.userSearch)+'&':'')+(S.userCity?'city_id='+S.userCity:''))">📥 CSV</button></div></div>
   <div class="rw" style="margin-bottom:12px">
     <input class="in" style="margin:0;flex:2" placeholder="Поиск по имени, нику, телефону..." value="${esc(S.userSearch)}" oninput="S.userSearch=this.value" onkeydown="if(event.key==='Enter')load()">
     <select class="in" style="margin:0;flex:1" onchange="S.userCity=this.value;load()"><option value="">Все города</option>${S.cities.map(c=>`<option value="${c.id}" ${S.userCity==c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
@@ -250,7 +285,7 @@ function render(){
   if(S.tab==='events')c=rEvents();else if(S.tab==='users')c=rUsers();else if(S.tab==='tariffs')c=rTariffs();else if(S.tab==='pages')c=rPages();else if(S.tab==='cities')c=rCities();
 
   document.getElementById('app').innerHTML=`<div class="ly">
-    <div class="sb"><h1>🔧 SingleChel</h1>${tabs.map(t=>`<button class="ni ${S.tab===t.id?'ac':''}" onclick="setTab('${t.id}')">${t.l}</button>`).join('')}</div>
+    <div class="sb"><h1>🔧 SingleChel</h1>${tabs.map(t=>`<button class="ni ${S.tab===t.id?'ac':''}" onclick="setTab('${t.id}')">${t.l}</button>`).join('')}<div style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px;border-top:1px solid var(--bd)"><button class="bt bd" style="width:100%;font-size:11px" onclick="logout()">🚪 Выйти</button></div></div>
     <div class="mn">
       <div class="sts">
         <div class="st"><div class="n">${S.events.length}</div><div class="l">Мероприятий</div></div>
@@ -261,7 +296,8 @@ function render(){
     ${rModal()}
     ${S.toast?`<div class="tst tst-${S.toast.t}">${esc(S.toast.m)}</div>`:''}`;
 }
-load();
+// Initial check: if we have saved secret, try loading; otherwise show login
+if(ADMIN_SECRET){load()}else{showLogin()}
 </script>
 </body>
 </html>

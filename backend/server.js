@@ -43,11 +43,28 @@ function authMW(req, res, next) {
 }
 function reqAuth(req, res, next) { if (!req.telegramUser) return res.status(401).json({ error: 'Unauthorized' }); next(); }
 function reqAdmin(req, res, next) {
+  // Option 1: Admin secret header (for admin panel)
+  const adminSecret = req.headers['x-admin-secret'] || req.query.admin_secret;
+  if (adminSecret && adminSecret === (process.env.ADMIN_SECRET || 'singlechel-admin-2026')) {
+    req.isAdmin = true;
+    return next();
+  }
+  // Option 2: Telegram user who is admin
   if (!req.telegramUser) return res.status(401).json({ error: 'Unauthorized' });
   const u = db.prepare('SELECT is_admin FROM users WHERE telegram_id = ?').get(String(req.telegramUser.id));
   if (!u || !u.is_admin) return res.status(403).json({ error: 'Forbidden' });
   next();
 }
+
+// Admin login check endpoint
+app.post('/api/admin/login', (req, res) => {
+  const { secret } = req.body;
+  if (secret === (process.env.ADMIN_SECRET || 'singlechel-admin-2026')) {
+    return res.json({ success: true });
+  }
+  res.status(403).json({ error: 'Неверный пароль' });
+});
+
 app.use(authMW);
 
 // ===== AUTH =====
