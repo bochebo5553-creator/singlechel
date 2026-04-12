@@ -6,298 +6,244 @@
 <title>SingleChel — Админ</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0f13;--bg2:#1a1a24;--bg3:#222233;--a:#ff5e7a;--a2:#ff3d60;--t:#f0eff4;--m:#9090a7;--d:#5e5e74;--bd:#2a2a3d;--ok:#34d399;--w:#fbbf24;--bl:#60a5fa;--f:'Nunito',sans-serif}
+:root{--bg:#0f0f13;--c:#1a1a24;--c2:#222233;--a:#ff5e7a;--a2:#ff3d60;--t:#f0eff4;--m:#9090a7;--d:#5e5e74;--bd:#2a2a3d;--ok:#34d399;--w:#fbbf24;--bl:#60a5fa;--f:'Nunito',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--f);background:var(--bg);color:var(--t);min-height:100vh}
-.ly{display:flex;min-height:100vh}.sb{width:200px;background:var(--bg2);border-right:1px solid var(--bd);padding:14px 0;position:fixed;height:100vh;overflow-y:auto}
-.sb h1{font-size:15px;padding:0 14px 14px;color:var(--a);font-weight:800;border-bottom:1px solid var(--bd);margin-bottom:6px}
+.ly{display:flex;min-height:100vh}.sb{width:200px;background:var(--c);border-right:1px solid var(--bd);padding:14px 0;position:fixed;height:100vh;overflow-y:auto}
+.sb h1{font-size:14px;padding:0 14px 14px;color:var(--a);font-weight:800;border-bottom:1px solid var(--bd);margin-bottom:6px}
 .ni{display:block;padding:9px 14px;color:var(--m);font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--f);transition:.15s}
 .ni:hover,.ni.ac{color:var(--t);background:rgba(255,94,122,.08)}.ni.ac{border-right:3px solid var(--a)}
+.ni .cnt{background:var(--a);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:4px}
 .mn{margin-left:200px;flex:1;padding:20px;max-width:1000px}
-.tb{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
-.cd{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
-.tbl{width:100%;border-collapse:collapse;font-size:12px}.tbl th{text-align:left;padding:7px 8px;background:var(--bg3);color:var(--m);font-weight:600;border-bottom:1px solid var(--bd);white-space:nowrap}
-.tbl td{padding:7px 8px;border-bottom:1px solid var(--bd);vertical-align:top}.tbl tr:hover td{background:rgba(255,255,255,.02)}
-.bt{padding:6px 12px;border:none;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
-.bt:active{transform:scale(.96)}.bp{background:var(--a);color:#fff}.bp:hover{background:var(--a2)}.bs{background:var(--bg3);color:var(--t);border:1px solid var(--bd)}
-.bd{background:transparent;color:var(--a);border:1px solid var(--a)}.bg{background:var(--ok);color:#fff}.bw{background:var(--w);color:#000}
-.in{width:100%;padding:8px 10px;background:#1e1e2e;border:1px solid var(--bd);border-radius:6px;color:var(--t);font-family:var(--f);font-size:12px;outline:none;margin-bottom:8px}
+.tb{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:6px}
+.cd{background:var(--c);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}.tbl th{text-align:left;padding:6px 8px;background:var(--c2);color:var(--m);font-weight:600;border-bottom:1px solid var(--bd)}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top}.tbl tr:hover td{background:rgba(255,255,255,.02)}
+.bt{padding:5px 10px;border:none;border-radius:6px;font-family:var(--f);font-size:11px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
+.bp{background:var(--a);color:#fff}.bp:hover{background:var(--a2)}.bs{background:var(--c2);color:var(--t);border:1px solid var(--bd)}
+.bd{background:transparent;color:var(--a);border:1px solid var(--a)}.bg{background:var(--ok);color:#fff}.bw{background:var(--w);color:#000}.bb{background:var(--bl);color:#fff}
+.in{width:100%;padding:7px 9px;background:#1e1e2e;border:1px solid var(--bd);border-radius:6px;color:var(--t);font-family:var(--f);font-size:12px;outline:none;margin-bottom:7px}
 .in:focus{border-color:var(--a)}select.in{appearance:auto}textarea.in{min-height:80px;resize:vertical}
 .lb{display:block;font-size:10px;color:var(--m);font-weight:600;margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px}
 .rw{display:flex;gap:8px}.rw>*{flex:1}
-.bg2{display:inline-block;padding:2px 6px;border-radius:16px;font-size:10px;font-weight:700}
-.bg-g{background:rgba(52,211,153,.15);color:var(--ok)}.bg-y{background:rgba(251,191,36,.15);color:var(--w)}.bg-r{background:rgba(255,94,122,.12);color:var(--a)}.bg-b{background:rgba(96,165,250,.15);color:var(--bl)}
+.bg2{display:inline-block;padding:1px 5px;border-radius:14px;font-size:10px;font-weight:700}
+.bg-g{background:rgba(52,211,153,.15);color:var(--ok)}.bg-y{background:rgba(251,191,36,.15);color:var(--w)}.bg-r{background:rgba(255,94,122,.12);color:var(--a)}.bg-b{background:rgba(96,165,250,.15);color:var(--bl)}.bg-o{background:rgba(251,146,60,.15);color:#fb923c}
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:100}
-.mdl{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:18px;width:92%;max-width:560px;max-height:85vh;overflow-y:auto}
-.mdl h2{font-size:16px;font-weight:800;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:16px}
-.st{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center}
-.st .n{font-size:22px;font-weight:800;color:var(--a)}.st .l{font-size:10px;color:var(--m);margin-top:1px}
-.tst{position:fixed;top:14px;right:14px;padding:9px 16px;border-radius:8px;font-weight:700;font-size:12px;z-index:200;animation:fi .3s;color:#fff;max-width:320px}
-.tst-ok{background:var(--ok)}.tst-er{background:var(--a)}.tst-in{background:var(--bl)}
-.tag{display:inline-block;padding:1px 5px;margin:1px;background:var(--bg3);border-radius:3px;font-size:10px;color:var(--m)}
-.acts{display:flex;gap:5px;flex-wrap:wrap}
-.prev{width:60px;height:40px;border-radius:4px;object-fit:cover;border:1px solid var(--bd)}
+.mdl{background:var(--c);border:1px solid var(--bd);border-radius:12px;padding:18px;width:92%;max-width:580px;max-height:85vh;overflow-y:auto}
+.mdl h2{font-size:15px;font-weight:800;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:16px}
+.st{background:var(--c);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center}.st .n{font-size:20px;font-weight:800;color:var(--a)}.st .l{font-size:9px;color:var(--m)}
+.tst{position:fixed;top:14px;right:14px;padding:9px 16px;border-radius:8px;font-weight:700;font-size:12px;z-index:200;animation:fi .3s;color:#fff}
+.tag{display:inline-block;padding:1px 4px;margin:1px;background:var(--c2);border-radius:3px;font-size:10px;color:var(--m);cursor:pointer}
+.tag:hover{background:var(--a);color:#fff}
+.acts{display:flex;gap:4px;flex-wrap:wrap}
+.prev{width:80px;height:50px;border-radius:4px;object-fit:cover;border:1px solid var(--bd)}
 @keyframes fi{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){.sb{display:none}.mn{margin-left:0;padding:10px}.sts{grid-template-columns:1fr 1fr}.rw{flex-direction:column}}
+@media(max-width:768px){.sb{display:none}.mn{margin-left:0;padding:10px}.rw{flex-direction:column}}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-let ADMIN_SECRET = sessionStorage.getItem('admin_secret') || '';
+let AS=sessionStorage.getItem('as')||'',TAB=sessionStorage.getItem('tab')||'moderation';
+function gH(){return{'Content-Type':'application/json','X-Admin-Secret':AS}}
+function gHU(){return{'X-Admin-Secret':AS}}
+async function GET(u){const r=await fetch(u,{headers:gH()});if(r.status===401||r.status===403){sL('Сессия истекла');return{}}return r.json()}
+async function POST(u,b){const r=await fetch(u,{method:'POST',headers:gH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
+async function PUT(u,b){const r=await fetch(u,{method:'PUT',headers:gH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
+async function DEL(u){const r=await fetch(u,{method:'DELETE',headers:gH()});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
+async function UPL(u,fd){const r=await fetch(u,{method:'POST',headers:gHU(),body:fd});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
 
-function getH(){return{'Content-Type':'application/json','X-Admin-Secret':ADMIN_SECRET}}
-function getHU(){return{'X-Admin-Secret':ADMIN_SECRET}}
+let S={ev:[],us:[],ct:[],tf:[],pn:[],t:null,us_s:'',us_c:'',ev_c:''},M=null;
 
-async function GET(u){const r=await fetch(u,{headers:getH()});if(r.status===401||r.status===403){showLogin('Сессия истекла. Введите пароль заново.');return{}}return r.json()}
-async function POST(u,b){const r=await fetch(u,{method:'POST',headers:getH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
-async function PUT(u,b){const r=await fetch(u,{method:'PUT',headers:getH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
-async function DEL(u){const r=await fetch(u,{method:'DELETE',headers:getH()});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
-async function UPL(u,fd){fd.append('_admin_secret',ADMIN_SECRET);const r=await fetch(u,{method:'POST',headers:getHU(),body:fd});if(r.status===401||r.status===403){showLogin('Нет доступа');return{}}return r.json()}
+function sL(msg=''){AS='';sessionStorage.removeItem('as');document.getElementById('app').innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px"><div style="background:var(--c);border:1px solid var(--bd);border-radius:14px;padding:32px;width:100%;max-width:360px;text-align:center"><h1 style="font-size:22px;font-weight:800;color:var(--a);margin-bottom:20px">🔧 SingleChel</h1>${msg?`<div style="background:rgba(255,94,122,.12);color:var(--a);padding:8px;border-radius:6px;font-size:12px;margin-bottom:14px">${msg}</div>`:''}<input class="in" type="password" id="lpw" placeholder="Пароль администратора" style="text-align:center" onkeydown="if(event.key==='Enter')dL()"><div style="height:10px"></div><button class="bt bp" style="width:100%;padding:10px;font-size:13px" onclick="dL()">Войти</button></div></div>`;setTimeout(()=>document.getElementById('lpw')?.focus(),100)}
 
-let S={tab:'events',events:[],users:[],cities:[],tariffs:[],toast:null,userSearch:'',userCity:'',eventCity:'',loggedIn:!!ADMIN_SECRET},M=null;
+async function dL(){const pw=document.getElementById('lpw')?.value;if(!pw){sL('Введите пароль');return}try{const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:pw})});if(r.ok){AS=pw;sessionStorage.setItem('as',pw);load()}else sL('Неверный пароль')}catch{sL('Ошибка подключения')}}
 
-function showLogin(msg=''){
-  S.loggedIn=false;ADMIN_SECRET='';sessionStorage.removeItem('admin_secret');
-  document.getElementById('app').innerHTML=`
-    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px">
-      <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:32px;width:100%;max-width:360px;text-align:center">
-        <h1 style="font-size:24px;font-weight:800;color:var(--a);margin-bottom:4px">🔧 SingleChel</h1>
-        <p style="color:var(--m);font-size:13px;margin-bottom:24px">Вход в админ-панель</p>
-        ${msg?`<div style="background:rgba(255,94,122,.12);color:var(--a);padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:16px">${msg}</div>`:''}
-        <input class="in" type="password" id="login-pw" placeholder="Пароль администратора" style="text-align:center;font-size:14px" onkeydown="if(event.key==='Enter')doLogin()">
-        <div style="height:12px"></div>
-        <button class="bt bp" style="width:100%;padding:12px;font-size:14px" onclick="doLogin()">Войти</button>
-        <p style="color:var(--d);font-size:11px;margin-top:16px">Пароль — это значение ADMIN_SECRET<br>из настроек вашего сервера</p>
-      </div>
-    </div>`;
-  setTimeout(()=>{const el=document.getElementById('login-pw');if(el)el.focus()},100);
-}
-
-async function doLogin(){
-  const pw=document.getElementById('login-pw')?.value;
-  if(!pw){showLogin('Введите пароль');return}
-  try{
-    const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:pw})});
-    if(r.ok){
-      ADMIN_SECRET=pw;sessionStorage.setItem('admin_secret',pw);S.loggedIn=true;
-      load();
-    }else{showLogin('Неверный пароль');}
-  }catch(e){showLogin('Ошибка подключения к серверу');}
-}
-
-function logout(){sessionStorage.removeItem('admin_secret');showLogin('Вы вышли из системы')}
-
-function toast(m,t='ok'){S.toast={m,t};render();setTimeout(()=>{S.toast=null;render()},3000)}
-function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
-function fmt(d){if(!d)return'—';return new Date(d).toLocaleString('ru-RU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
-function setTab(t){S.tab=t;M=null;render()}
+function toast(m,t='ok'){S.t={m,t};R();setTimeout(()=>{S.t=null;R()},3000)}
+function E(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+function F(d){if(!d)return'—';return new Date(d).toLocaleString('ru-RU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function sT(t){TAB=t;sessionStorage.setItem('tab',t);M=null;R()}
 
 async function load(){
-  try{const[e,u,c,t]=await Promise.all([GET('/api/admin/events'+(S.eventCity?'?city_id='+S.eventCity:'')),GET('/api/admin/users?'+(S.userSearch?'search='+encodeURIComponent(S.userSearch)+'&':'')+(S.userCity?'city_id='+S.userCity:'')),GET('/api/cities'),GET('/api/admin/tariffs')]);
-  S.events=e.events||[];S.users=u.users||[];S.cities=c.cities||[];S.tariffs=t.tariffs||[];}catch(e){console.error(e)}render()}
+  try{const[e,u,c,t,p]=await Promise.all([GET('/api/admin/events'+(S.ev_c?'?city_id='+S.ev_c:'')),GET('/api/admin/users?'+(S.us_s?'search='+encodeURIComponent(S.us_s)+'&':'')+(S.us_c?'city_id='+S.us_c:'')),GET('/api/cities'),GET('/api/admin/tariffs'),GET('/api/admin/pending')]);
+  S.ev=e.events||[];S.us=u.users||[];S.ct=c.cities||[];S.tf=t.tariffs||[];S.pn=p.users||[];}catch(e){console.error(e)}R()}
+
+// ===== MODERATION =====
+function rMod(){
+  if(S.pn.length===0) return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">📋 Модерация заявок</h2><div class="cd"><p style="color:var(--m);padding:16px 0;text-align:center">✅ Нет новых заявок</p></div>`;
+  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">📋 Модерация заявок (${S.pn.length})</h2>
+  ${S.pn.map(u=>`<div class="cd"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px">
+      <div style="font-weight:700;font-size:14px">${E(u.full_name)} <span class="bg2 bg-o">Ожидает</span></div>
+      <div style="font-size:11px;color:var(--m)">@${E(u.username||'—')} • ${E(u.city_name||'—')}</div>
+      <div style="font-size:11px;color:var(--d)">📞 ${E(u.phone||'—')} • ✉️ ${E(u.email||'—')}</div>
+      <div style="font-size:11px;color:var(--d)">Telegram ID: ${u.telegram_id} • Дата: ${F(u.created_at)}</div>
+    </div>
+    <div><button class="bt bg" onclick="oApprove(${u.id},'${E(u.full_name)}')">✅ Одобрить</button> <button class="bt bd" onclick="oReject(${u.id})">❌ Отклонить</button></div>
+  </div></div>`).join('')}`;
+}
+
+function oApprove(uid,name){
+  const sugLogin=name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-zа-яё0-9_]/gi,'');
+  const sugPw=Math.random().toString(36).slice(2,10);
+  M={t:'approve',uid,name,login:sugLogin,pw:sugPw};R();}
+
+async function doApprove(){
+  const login=document.getElementById('ap-login')?.value?.trim();
+  const pw=document.getElementById('ap-pw')?.value?.trim();
+  if(!login||!pw){toast('Заполните логин и пароль','er');return}
+  const r=await POST('/api/admin/approve/'+M.uid,{login,password:pw});
+  if(r.error){toast(r.error,'er');return}
+  M=null;toast('Пользователь одобрен! Логин/пароль отправлены в Telegram');load();}
+
+function oReject(uid){if(confirm('Отклонить заявку?')){POST('/api/admin/reject/'+uid,{reason:'Не прошёл модерацию'}).then(()=>{toast('Заявка отклонена');load()})}}
 
 // ===== EVENTS =====
-function rEvents(){
-  return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">📅 Мероприятия (${S.events.length})</h2><div class="acts">
-    <select class="in" style="width:auto;margin:0;padding:5px 8px;font-size:11px" onchange="S.eventCity=this.value;load()"><option value="">Все города</option>${S.cities.map(c=>`<option value="${c.id}" ${S.eventCity==c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
-    <button class="bt bg" onclick="window.open('/api/admin/export/events?admin_secret='+encodeURIComponent(ADMIN_SECRET)+(S.eventCity?'&city_id='+S.eventCity:''))">📥 CSV</button>
+function rEv(){
+  return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">📅 Мероприятия (${S.ev.length})</h2><div class="acts">
+    <select class="in" style="width:auto;margin:0;padding:4px" onchange="S.ev_c=this.value;load()"><option value="">Все города</option>${S.ct.map(c=>`<option value="${c.id}" ${S.ev_c==c.id?'selected':''}>${E(c.name)}</option>`).join('')}</select>
+    <button class="bt bg" onclick="window.open('/api/admin/export/events?admin_secret='+encodeURIComponent(AS)+(S.ev_c?'&city_id='+S.ev_c:''))">📥</button>
     <button class="bt bp" onclick="oEvM()">+ Создать</button></div></div>
-  ${S.events.map(e=>`<div class="cd"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
-    ${e.image_url&&e.image_url!=='/uploads/event-default.jpg'?`<img src="${esc(e.image_url)}" class="prev">`:''}
-    <div style="flex:1;min-width:180px"><div style="font-size:14px;font-weight:700">${esc(e.title)}</div>
-    <div style="font-size:11px;color:var(--m)">${fmt(e.date)} • ${esc(e.city_name||'—')}</div>
-    <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap"><span class="bg2 ${e.is_free?'bg-g':'bg-y'}">${e.is_free?'Бесплатно':e.price+' ₽'}</span><span class="bg2 bg-b">👥${e.participant_count||0}${e.participant_limit>0?'/'+e.participant_limit:''}</span>${e.is_active?'':'<span class="bg2 bg-r">Скрыто</span>'}</div></div>
+  ${S.ev.map(e=>`<div class="cd"><div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap">
+    ${e.image_url&&e.image_url!=='/uploads/event-default.jpg'?`<img src="${E(e.image_url)}" class="prev">`:''}
+    <div style="flex:1;min-width:180px"><div style="font-size:13px;font-weight:700">${E(e.title)}</div>
+    <div style="font-size:11px;color:var(--m)">${F(e.date)} • ${E(e.city_name||'—')}</div>
+    <div style="display:flex;gap:3px;margin-top:3px"><span class="bg2 ${e.is_free?'bg-g':'bg-y'}">${e.is_free?'Бесплатно':e.price+' ₽'}</span><span class="bg2 bg-b">👥${e.participant_count||0}${e.participant_limit>0?'/'+e.participant_limit:''}</span>${e.is_active?'':'<span class="bg2 bg-r">Скрыто</span>'}</div></div>
     <div class="acts"><button class="bt bs" onclick="oEvM(${e.id})">✏️</button><button class="bt bs" onclick="vPart(${e.id})">👥</button><button class="bt bd" onclick="if(confirm('Удалить?'))dEv(${e.id})">🗑</button></div>
   </div></div>`).join('')}`;
 }
 
-function oEvM(id){const ev=id?S.events.find(e=>e.id===id):null;M={t:'ev',d:ev?{...ev}:{title:'',description:'',date:'',address:'',map_link:'',price:0,is_free:true,participant_limit:0,city_id:1,is_active:true}};render()}
-
-async function sEv(){const d=M.d,fd=new FormData();fd.append('title',d.title||'');fd.append('description',d.description||'');fd.append('date',d.date||'');fd.append('address',d.address||'');fd.append('map_link',d.map_link||'');fd.append('is_free',d.is_free?'true':'false');fd.append('price',d.is_free?'0':String(d.price||0));fd.append('participant_limit',String(d.participant_limit||0));fd.append('city_id',String(d.city_id||1));fd.append('is_active',d.is_active!==false?'true':'false');
+function oEvM(id){const ev=id?S.ev.find(e=>e.id===id):null;M={t:'ev',d:ev?{...ev}:{title:'',description:'',date:'',address:'',map_link:'',price:0,is_free:true,participant_limit:0,city_id:1,is_active:true}};R()}
+async function sEv(){const d=M.d,fd=new FormData();['title','description','date','address','map_link'].forEach(k=>fd.append(k,d[k]||''));fd.append('is_free',d.is_free?'true':'false');fd.append('price',d.is_free?'0':String(d.price||0));fd.append('participant_limit',String(d.participant_limit||0));fd.append('city_id',String(d.city_id||1));fd.append('is_active',d.is_active!==false?'true':'false');
 const f=document.getElementById('ev-img');if(f?.files?.[0])fd.append('image',f.files[0]);
 if(d.id)await UPL('/api/admin/events/'+d.id,fd);else await UPL('/api/admin/events',fd);M=null;toast('Мероприятие сохранено!');load()}
-
 async function dEv(id){await DEL('/api/admin/events/'+id);toast('Удалено');load()}
 
-async function vPart(eid){const d=await GET('/api/admin/events/'+eid+'/participants');const ev=S.events.find(e=>e.id===eid);M={t:'part',eid,en:ev?.title,ps:d.participants||[]};render()}
-async function rmPart(eid,uid){await DEL('/api/admin/events/'+eid+'/participants/'+uid);toast('Участник удалён');vPart(eid)}
+// Participants modal with download + clickable names
+async function vPart(eid){const d=await GET('/api/admin/events/'+eid+'/participants');const ev=S.ev.find(e=>e.id===eid);M={t:'part',eid,en:ev?.title,ps:d.participants||[]};R()}
+async function rmP(eid,uid){await DEL('/api/admin/events/'+eid+'/participants/'+uid);toast('Удалён');vPart(eid)}
 
 // ===== USERS =====
-function rUsers(){
-  return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">👥 Пользователи (${S.users.length})</h2><div class="acts">
-    <button class="bt bg" onclick="window.open('/api/admin/export/users?admin_secret='+encodeURIComponent(ADMIN_SECRET)+'&'+(S.userSearch?'search='+encodeURIComponent(S.userSearch)+'&':'')+(S.userCity?'city_id='+S.userCity:''))">📥 CSV</button></div></div>
-  <div class="rw" style="margin-bottom:12px">
-    <input class="in" style="margin:0;flex:2" placeholder="Поиск по имени, нику, телефону..." value="${esc(S.userSearch)}" oninput="S.userSearch=this.value" onkeydown="if(event.key==='Enter')load()">
-    <select class="in" style="margin:0;flex:1" onchange="S.userCity=this.value;load()"><option value="">Все города</option>${S.cities.map(c=>`<option value="${c.id}" ${S.userCity==c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
-    <button class="bt bp" onclick="load()" style="flex:0 0 auto">🔍</button>
-  </div>
-  ${S.users.length===0?'<div class="cd"><p style="color:var(--m)">Не найдено</p></div>':''}
-  ${S.users.map(u=>`<div class="cd"><div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
-    <div style="width:36px;height:36px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--a);flex-shrink:0;font-size:14px;overflow:hidden">
-      ${u.photo_url||u.avatar_url?`<img src="${esc(u.photo_url||u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:(u.full_name||'?').charAt(0).toUpperCase()}</div>
-    <div style="flex:1;min-width:160px">
-      <div style="font-weight:700;font-size:13px">${esc(u.full_name)} ${u.is_admin?'<span class="bg2 bg-y">Админ</span>':''}</div>
-      <div style="font-size:11px;color:var(--m)">@${esc(u.username||'—')} • ${esc(u.city_name||'—')} • ${esc(u.phone||'—')}</div>
-      <div style="font-size:11px;color:var(--d);margin-top:2px">Тариф: <span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[u.tariff]||'bg-r'}">${{free:'Бесплатный',tier1:'Уровень 1',tier2:'Уровень 2'}[u.tariff]||u.tariff}</span>${u.tariff_expires?' до '+fmt(u.tariff_expires):''}</div>
-      ${u.events?.length?`<div style="margin-top:3px">${u.events.map(ev=>`<span class="tag">${esc(ev.title)} <span class="bg2 ${ev.status==='registered'?'bg-g':'bg-r'}" style="font-size:8px">${ev.status==='registered'?'✓':'✕'}</span></span>`).join('')}</div>`:''}
+function rUs(){
+  return`<div class="tb"><h2 style="font-size:18px;font-weight:800;margin:0">👥 Пользователи (${S.us.length})</h2><div class="acts">
+    <button class="bt bg" onclick="window.open('/api/admin/export/users?admin_secret='+encodeURIComponent(AS)+'&'+(S.us_s?'search='+encodeURIComponent(S.us_s)+'&':'')+(S.us_c?'city_id='+S.us_c:''))">📥</button></div></div>
+  <div class="rw" style="margin-bottom:10px"><input class="in" style="margin:0;flex:2" placeholder="Поиск: имя, ник, телефон..." value="${E(S.us_s)}" oninput="S.us_s=this.value" onkeydown="if(event.key==='Enter')load()">
+  <select class="in" style="margin:0;flex:1" onchange="S.us_c=this.value;load()"><option value="">Все города</option>${S.ct.map(c=>`<option value="${c.id}" ${S.us_c==c.id?'selected':''}>${E(c.name)}</option>`).join('')}</select>
+  <button class="bt bp" onclick="load()" style="flex:0 0 auto">🔍</button></div>
+  ${S.us.map(u=>`<div class="cd" style="cursor:pointer" onclick="oUM(${u.id})"><div style="display:flex;gap:8px;align-items:flex-start">
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--a);font-size:13px;overflow:hidden;flex-shrink:0">
+      ${u.photo_url||u.avatar_url?`<img src="${E(u.photo_url||u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:(u.full_name||'?').charAt(0).toUpperCase()}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700;font-size:12px">${E(u.full_name)} ${u.is_admin?'<span class="bg2 bg-y">А</span>':''} <span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[u.tariff]}">${{free:'Бес',tier1:'Ур1',tier2:'Ур2'}[u.tariff]}</span>${u.tariff_expires?' <span style="font-size:10px;color:var(--d)">до '+F(u.tariff_expires)+'</span>':''}</div>
+      <div style="font-size:10px;color:var(--m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">@${E(u.username||'—')} • ${E(u.city_name||'—')} • ${E(u.phone||'—')}</div>
+      ${u.events?.length?`<div style="margin-top:2px">${u.events.slice(0,3).map(ev=>`<span class="tag" onclick="event.stopPropagation();vPart(${ev.id})">${E(ev.title)}</span>`).join('')}${u.events.length>3?`<span style="font-size:10px;color:var(--d)">+${u.events.length-3}</span>`:''}</div>`:''}
     </div>
-    <div class="acts" style="flex-shrink:0">
-      <button class="bt bs" onclick="oUM(${u.id})">👁</button>
-      <select class="in" style="width:auto;margin:0;padding:3px 6px;font-size:10px" onchange="chT(${u.id},this.value)">
-        <option value="free" ${u.tariff==='free'?'selected':''}>Бесплатный</option>
-        <option value="tier1" ${u.tariff==='tier1'?'selected':''}>Ур.1</option>
-        <option value="tier2" ${u.tariff==='tier2'?'selected':''}>Ур.2</option></select>
-      <button class="bt ${u.is_admin?'bd':'bs'}" onclick="tgA(${u.id},${u.is_admin?0:1})">${u.is_admin?'−А':'+А'}</button>
+    <div class="acts" onclick="event.stopPropagation()">
+      <select class="in" style="width:auto;margin:0;padding:2px 4px;font-size:10px" onchange="chT(${u.id},this.value)"><option value="free" ${u.tariff==='free'?'selected':''}>Бес</option><option value="tier1" ${u.tariff==='tier1'?'selected':''}>Ур1</option><option value="tier2" ${u.tariff==='tier2'?'selected':''}>Ур2</option></select>
     </div></div></div>`).join('')}`;
 }
-
-function oUM(uid){const u=S.users.find(x=>x.id===uid);if(!u)return;M={t:'ud',u};render()}
+function oUM(uid){const u=S.us.find(x=>x.id===uid);if(!u)return;M={t:'ud',u};R()}
 async function chT(uid,t){await PUT('/api/admin/users/'+uid+'/tariff',{tariff:t});toast('Тариф обновлён');load()}
 async function tgA(uid,v){await PUT('/api/admin/users/'+uid+'/admin',{is_admin:v});toast(v?'Админ назначен':'Админ снят');load()}
-async function sndN(uid){const el=document.getElementById('nm-'+uid);const msg=el?el.value:prompt('Текст:');if(!msg)return;const r=await POST('/api/admin/notify',{user_id:uid,message:msg});if(r.success)toast('Уведомление отправлено');else toast(r.error||'Ошибка','er');if(el)el.value=''}
+async function sndN(uid){const el=document.getElementById('nm-'+uid);const msg=el?.value;if(!msg){toast('Введите текст','er');return}const r=await POST('/api/admin/notify',{user_id:uid,message:msg});if(r.success){toast('Отправлено в Telegram');if(el)el.value=''}else toast(r.error||'Ошибка','er')}
 
 // ===== TARIFFS =====
-function rTariffs(){
-  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">⭐ Управление тарифами</h2>
-  ${S.tariffs.map(t=>`<div class="cd"><div class="rw" style="align-items:flex-end;flex-wrap:wrap">
-    <div style="flex:2;min-width:120px"><label class="lb">Название</label><input class="in" id="tn${t.id}" value="${esc(t.name)}" style="margin:0"></div>
-    <div><label class="lb">Тип</label><input class="in" value="${t.tier}" disabled style="margin:0;background:var(--bg3)"></div>
-    <div><label class="lb">₽/мес</label><input class="in" type="number" id="tp${t.id}" value="${t.price_monthly}" style="margin:0" ${t.tier==='free'?'disabled':''}></div>
-    <div><label class="lb">₽/год</label><input class="in" type="number" id="ty${t.id}" value="${t.price_yearly}" style="margin:0" ${t.tier==='free'?'disabled':''}></div>
-    <div style="flex:0 0 auto"><button class="bt bp" onclick="sT(${t.id})" ${t.tier==='free'?'disabled':''}>💾</button></div>
-  </div><div style="margin-top:6px;font-size:11px;color:var(--m)">Возможности: ${(t.features||[]).join(', ')}</div></div>`).join('')}`;
-}
-async function sT(id){const n=document.getElementById('tn'+id)?.value,pm=document.getElementById('tp'+id)?.value,py=document.getElementById('ty'+id)?.value;
-await PUT('/api/admin/tariffs/'+id,{name:n,price_monthly:parseFloat(pm),price_yearly:parseFloat(py)});toast('Тариф обновлён');load()}
+function rTf(){return`<h2 style="font-size:18px;font-weight:800;margin-bottom:14px">⭐ Тарифы</h2>${S.tf.map(t=>`<div class="cd"><div class="rw" style="align-items:flex-end;flex-wrap:wrap"><div style="flex:2"><label class="lb">Название</label><input class="in" id="tn${t.id}" value="${E(t.name)}" style="margin:0"></div><div><label class="lb">₽/мес</label><input class="in" type="number" id="tp${t.id}" value="${t.price_monthly}" style="margin:0" ${t.tier==='free'?'disabled':''}></div><div><label class="lb">₽/год</label><input class="in" type="number" id="ty${t.id}" value="${t.price_yearly}" style="margin:0" ${t.tier==='free'?'disabled':''}></div><div style="flex:0 0 auto"><button class="bt bp" onclick="sTf(${t.id})" ${t.tier==='free'?'disabled':''}>💾</button></div></div></div>`).join('')}`}
+async function sTf(id){await PUT('/api/admin/tariffs/'+id,{name:document.getElementById('tn'+id)?.value,price_monthly:parseFloat(document.getElementById('tp'+id)?.value),price_yearly:parseFloat(document.getElementById('ty'+id)?.value)});toast('Тариф сохранён');load()}
 
 // ===== PAGES =====
-function rPages(){
-  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">📄 Страницы</h2>
-  <p style="font-size:12px;color:var(--m);margin-bottom:12px">Для вставки изображений: загрузите через кнопку, скопируйте ссылку, вставьте в HTML как &lt;img src="ссылка"&gt;</p>
-  <div class="cd" style="margin-bottom:16px"><label class="lb">Загрузить изображение для страниц</label>
-    <input type="file" id="pg-file" accept="image/*" class="in" style="padding:6px">
-    <button class="bt bp" onclick="uplPgImg()">📤 Загрузить</button>
-    <div id="pg-img-result" style="margin-top:6px;font-size:11px"></div></div>
-  ${['about','rules','policy','support','consent_notifications'].map(s=>`
-    <div class="cd" style="cursor:pointer" onclick="oPM('${s}')"><div style="display:flex;justify-content:space-between;align-items:center">
-      <div><div style="font-weight:700;font-size:13px">${{about:'О нас',rules:'Правила',policy:'Политика конфиденциальности',support:'Служба заботы',consent_notifications:'Текст согласия на уведомления'}[s]}</div>
-      <div style="font-size:10px;color:var(--d)">/${s}</div></div>
-      <button class="bt bs">✏️</button></div></div>`).join('')}`;
-}
-
-async function uplPgImg(){const f=document.getElementById('pg-file');if(!f?.files?.[0]){toast('Выберите файл','er');return}
-const fd=new FormData();fd.append('file',f.files[0]);const r=await UPL('/api/admin/upload',fd);
-if(r.url){document.getElementById('pg-img-result').innerHTML=`✅ Ссылка: <code style="background:var(--bg3);padding:2px 6px;border-radius:3px;user-select:all">${r.url}</code> <br>HTML: <code style="background:var(--bg3);padding:2px 6px;border-radius:3px;user-select:all">&lt;img src="${r.url}" style="max-width:100%"&gt;</code>`;toast('Изображение загружено')}
-else toast('Ошибка загрузки','er')}
-
-async function oPM(slug){const d=await GET('/api/pages/'+slug);M={t:'pg',slug,pg:d.page||{title:slug,content:''}};render()}
-async function sPg(){const t=document.getElementById('pt').value,c=document.getElementById('pc').value;await PUT('/api/admin/pages/'+M.slug,{title:t,content:c});M=null;toast('Страница сохранена')}
+function rPg(){return`<h2 style="font-size:18px;font-weight:800;margin-bottom:14px">📄 Страницы</h2>${['about','rules','policy','support','consent_notifications'].map(s=>`<div class="cd" style="cursor:pointer" onclick="oPM('${s}')"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:700;font-size:13px">${{about:'О нас',rules:'Правила',policy:'Политика',support:'Служба заботы',consent_notifications:'Согласие на уведомления'}[s]}</div></div><button class="bt bs">✏️</button></div></div>`).join('')}`}
+async function oPM(slug){const d=await GET('/api/pages/'+slug);M={t:'pg',slug,pg:d.page||{title:slug,content:'',image_url:null}};R()}
+async function sPg(){const t=document.getElementById('pt')?.value,c=document.getElementById('pc')?.value;await PUT('/api/admin/pages/'+M.slug,{title:t,content:c});toast('Сохранено');M=null;R()}
+async function uplPgImg(){const f=document.getElementById('pg-img');if(!f?.files?.[0]){toast('Выберите файл','er');return}const fd=new FormData();fd.append('image',f.files[0]);const r=await UPL('/api/admin/pages/'+M.slug+'/image',fd);if(r.image_url){M.pg.image_url=r.image_url;toast('Изображение загружено');R()}else toast('Ошибка','er')}
 
 // ===== CITIES =====
-function rCities(){
-  return`<h2 style="font-size:18px;font-weight:800;margin-bottom:16px">🏙 Города (${S.cities.length})</h2><div class="cd">
-    <div class="rw" style="margin-bottom:12px;align-items:flex-end"><div style="flex:1"><label class="lb">Новый город</label><input class="in" id="nc" placeholder="Название" style="margin:0"></div>
-    <div style="flex:0 0 auto"><button class="bt bp" onclick="aC()">+ Добавить</button></div></div>
-    ${S.cities.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd)">
-      <span style="font-weight:600;font-size:13px">📍 ${esc(c.name)}</span>
-      ${c.id===1?'<span class="bg2 bg-g">По умолчанию</span>':`<button class="bt bd" onclick="if(confirm('Удалить?'))dC(${c.id})">🗑</button>`}
-    </div>`).join('')}</div>`;
-}
-async function aC(){const v=document.getElementById('nc')?.value?.trim();if(!v){toast('Введите название','er');return}const r=await POST('/api/admin/cities',{name:v});if(r.error){toast(r.error,'er');return}toast('Город добавлен');load()}
-async function dC(id){await DEL('/api/admin/cities/'+id);toast('Удалено');load()}
+function rCt(){return`<h2 style="font-size:18px;font-weight:800;margin-bottom:14px">🏙 Города</h2><div class="cd"><div class="rw" style="margin-bottom:10px;align-items:flex-end"><div style="flex:1"><input class="in" id="nc" placeholder="Название" style="margin:0"></div><div style="flex:0 0 auto"><button class="bt bp" onclick="aC()">+</button></div></div>${S.ct.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd)"><span style="font-size:13px">${E(c.name)}</span>${c.id===1?'<span class="bg2 bg-g">Default</span>':`<button class="bt bd" onclick="if(confirm('Удалить?'))dC(${c.id})">🗑</button>`}</div>`).join('')}</div>`}
+async function aC(){const v=document.getElementById('nc')?.value?.trim();if(!v){toast('Введите название','er');return}const r=await POST('/api/admin/cities',{name:v});if(r.error){toast(r.error,'er');return}toast('Добавлен');load()}
+async function dC(id){await DEL('/api/admin/cities/'+id);toast('Удалён');load()}
 
 // ===== MODALS =====
-function rModal(){
+function rM(){
   if(!M)return'';
-  const cls=`<button class="bt bs" onclick="M=null;render()" style="font-size:16px;line-height:1;padding:4px 8px">✕</button>`;
+  const X=`<button class="bt bs" onclick="M=null;R()" style="font-size:14px;padding:3px 7px">✕</button>`;
+
+  if(M.t==='approve') return`<div class="mbg" onclick="if(event.target===this){M=null;R()}"><div class="mdl">
+    <h2>Одобрить: ${E(M.name)} ${X}</h2>
+    <p style="font-size:12px;color:var(--m);margin-bottom:12px">Придумайте логин и пароль для этого пользователя. Они будут отправлены ему в Telegram.</p>
+    <label class="lb">Логин *</label><input class="in" id="ap-login" value="${E(M.login)}">
+    <label class="lb">Пароль *</label><input class="in" id="ap-pw" value="${E(M.pw)}">
+    <div class="acts" style="margin-top:10px"><button class="bt bg" onclick="doApprove()">✅ Одобрить и отправить</button><button class="bt bs" onclick="M=null;R()">Отмена</button></div>
+  </div></div>`;
 
   if(M.t==='ev'){const d=M.d,iF=d.is_free===true||d.is_free===1||d.is_free==='true';
-  return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
-    <h2>${d.id?'Редактировать':'Создать'} мероприятие ${cls}</h2>
-    <label class="lb">Название *</label><input class="in" value="${esc(d.title)}" oninput="M.d.title=this.value">
-    <label class="lb">Описание</label><textarea class="in" oninput="M.d.description=this.value">${esc(d.description||'')}</textarea>
+  return`<div class="mbg" onclick="if(event.target===this){M=null;R()}"><div class="mdl">
+    <h2>${d.id?'Редактировать':'Создать'} мероприятие ${X}</h2>
+    <label class="lb">Название *</label><input class="in" value="${E(d.title)}" oninput="M.d.title=this.value">
+    <label class="lb">Описание</label><textarea class="in" oninput="M.d.description=this.value">${E(d.description||'')}</textarea>
     <div class="rw"><div><label class="lb">Дата *</label><input class="in" type="datetime-local" value="${(d.date||'').replace(' ','T').slice(0,16)}" onchange="M.d.date=this.value"></div>
-    <div><label class="lb">Город</label><select class="in" onchange="M.d.city_id=+this.value">${S.cities.map(c=>`<option value="${c.id}" ${c.id==d.city_id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div></div>
-    <label class="lb">Адрес</label><input class="in" value="${esc(d.address||'')}" oninput="M.d.address=this.value">
-    <label class="lb">Ссылка на карту</label><input class="in" value="${esc(d.map_link||'')}" oninput="M.d.map_link=this.value">
-    <div style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px;background:var(--bg3);border-radius:6px">
-      <label style="font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px">
-        <input type="checkbox" ${iF?'checked':''} onchange="M.d.is_free=this.checked;if(this.checked)M.d.price=0;render()"> Бесплатное</label></div>
-    ${!iF?`<div class="rw"><div><label class="lb">Цена ₽ *</label><input class="in" type="number" value="${d.price||0}" oninput="M.d.price=+this.value||0" min="0"></div>
-    <div><label class="lb">Онлайн (-15%)</label><input class="in" value="${Math.round((d.price||0)*.85)} ₽" disabled style="background:var(--bg3)"></div></div>`:''}
-    <label class="lb">Лимит мест (0=без)</label><input class="in" type="number" value="${d.participant_limit||0}" oninput="M.d.participant_limit=+this.value||0" min="0">
-    ${d.image_url&&d.image_url!=='/uploads/event-default.jpg'?`<div style="margin-bottom:8px"><label class="lb">Текущее фото</label><img src="${esc(d.image_url)}" style="max-width:100%;max-height:120px;border-radius:6px;border:1px solid var(--bd)"></div>`:''}
-    <label class="lb">Изображение</label><input class="in" type="file" id="ev-img" accept="image/*" style="padding:6px">
-    <div style="display:flex;align-items:center;gap:6px;margin:6px 0"><input type="checkbox" id="ev-ac" ${d.is_active!==false&&d.is_active!==0?'checked':''} onchange="M.d.is_active=this.checked"><label for="ev-ac" style="font-size:12px">Активно</label></div>
-    <div class="acts" style="margin-top:10px"><button class="bt bp" onclick="sEv()">💾 Сохранить</button><button class="bt bs" onclick="M=null;render()">Отмена</button></div>
+    <div><label class="lb">Город</label><select class="in" onchange="M.d.city_id=+this.value">${S.ct.map(c=>`<option value="${c.id}" ${c.id==d.city_id?'selected':''}>${E(c.name)}</option>`).join('')}</select></div></div>
+    <label class="lb">Адрес</label><input class="in" value="${E(d.address||'')}" oninput="M.d.address=this.value">
+    <label class="lb">Ссылка на карту</label><input class="in" value="${E(d.map_link||'')}" oninput="M.d.map_link=this.value">
+    <div style="display:flex;align-items:center;gap:6px;margin:6px 0;padding:6px;background:var(--c2);border-radius:6px"><label style="font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px"><input type="checkbox" ${iF?'checked':''} onchange="M.d.is_free=this.checked;if(this.checked)M.d.price=0;R()"> Бесплатное</label></div>
+    ${!iF?`<div class="rw"><div><label class="lb">Цена ₽</label><input class="in" type="number" value="${d.price||0}" oninput="M.d.price=+this.value||0"></div><div><label class="lb">Онлайн</label><input class="in" value="${Math.round((d.price||0)*.85)} ₽" disabled style="background:var(--c2)"></div></div>`:''}
+    <label class="lb">Лимит мест</label><input class="in" type="number" value="${d.participant_limit||0}" oninput="M.d.participant_limit=+this.value||0">
+    ${d.image_url&&d.image_url!=='/uploads/event-default.jpg'?`<div style="margin-bottom:6px"><label class="lb">Текущее фото</label><img src="${E(d.image_url)}" style="max-width:100%;max-height:100px;border-radius:6px;border:1px solid var(--bd)"></div>`:''}
+    <label class="lb">Новое изображение</label><input class="in" type="file" id="ev-img" accept="image/*" style="padding:5px">
+    <div style="display:flex;align-items:center;gap:5px;margin:5px 0"><input type="checkbox" ${d.is_active!==false&&d.is_active!==0?'checked':''} onchange="M.d.is_active=this.checked"><label style="font-size:11px">Активно</label></div>
+    <div class="acts" style="margin-top:8px"><button class="bt bp" onclick="sEv()">💾 Сохранить</button><button class="bt bs" onclick="M=null;R()">Отмена</button></div>
   </div></div>`}
 
-  if(M.t==='part'){return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
-    <h2>👥 ${esc(M.en)} ${cls}</h2>
-    ${M.ps.length===0?'<p style="color:var(--m);padding:10px 0">Нет участников</p>':`
-    <table class="tbl"><thead><tr><th>Имя</th><th>Тариф</th><th>Оплата</th><th>Статус</th><th>Дата</th><th></th></tr></thead><tbody>
-    ${M.ps.map(p=>`<tr><td><strong>${esc(p.full_name)}</strong><br><span style="color:var(--m)">@${esc(p.username||'—')}</span></td>
-    <td><span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[p.tariff]||'bg-r'}">${{free:'Бес',tier1:'Ур1',tier2:'Ур2'}[p.tariff]||'?'}</span></td>
-    <td style="font-size:11px">${esc(p.payment_method||'—')}</td>
-    <td><span class="bg2 ${p.status==='registered'?'bg-g':'bg-r'}">${p.status}</span></td>
-    <td style="font-size:10px;color:var(--m)">${fmt(p.joined_at)}</td>
-    <td><button class="bt bd" onclick="rmPart(${M.eid},${p.id})">✕</button></td></tr>`).join('')}</tbody></table>`}
-    <div style="margin-top:10px"><button class="bt bs" onclick="M=null;render()">Закрыть</button></div>
+  if(M.t==='part'){return`<div class="mbg" onclick="if(event.target===this){M=null;R()}"><div class="mdl">
+    <h2>👥 ${E(M.en)} ${X}</h2>
+    <div class="acts" style="margin-bottom:10px"><button class="bt bg" onclick="window.open('/api/admin/export/event-participants/${M.eid}?admin_secret='+encodeURIComponent(AS))">📥 Скачать список</button></div>
+    ${M.ps.length===0?'<p style="color:var(--m)">Нет участников</p>':`<table class="tbl"><thead><tr><th>Имя</th><th>Тариф</th><th>Оплата</th><th>Статус</th><th></th></tr></thead><tbody>
+    ${M.ps.map(p=>`<tr style="cursor:pointer" onclick="M=null;R();oUM(${p.id})"><td><strong>${E(p.full_name)}</strong><br><span style="color:var(--m)">@${E(p.username||'—')}</span></td>
+    <td><span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[p.tariff]||'bg-r'}">${{free:'Б',tier1:'1',tier2:'2'}[p.tariff]||'?'}</span></td>
+    <td style="font-size:10px">${E(p.payment_method||'—')}</td><td><span class="bg2 ${p.status==='registered'?'bg-g':'bg-r'}">${p.status}</span></td>
+    <td onclick="event.stopPropagation()"><button class="bt bd" onclick="rmP(${M.eid},${p.id})">✕</button></td></tr>`).join('')}</tbody></table>`}
+    <div style="margin-top:10px"><button class="bt bs" onclick="M=null;R()">Закрыть</button></div>
   </div></div>`}
 
-  if(M.t==='ud'){const u=M.u;return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
-    <h2>Профиль ${cls}</h2>
-    <div style="display:flex;gap:10px;margin-bottom:12px;align-items:center">
-      <div style="width:48px;height:48px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--a);overflow:hidden;flex-shrink:0">
-        ${u.photo_url||u.avatar_url?`<img src="${esc(u.photo_url||u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:(u.full_name||'?').charAt(0).toUpperCase()}</div>
-      <div><div style="font-weight:700">${esc(u.full_name)} <span style="color:var(--m);font-weight:400">@${esc(u.username||'—')}</span></div>
-      <div style="font-size:11px;color:var(--m)">${esc(u.city_name||'—')} • Рег: ${fmt(u.created_at)}</div></div></div>
-    <table class="tbl" style="margin-bottom:12px">
-      <tr><td style="color:var(--m);width:100px">Телефон</td><td>${esc(u.phone||'—')}</td></tr>
-      <tr><td style="color:var(--m)">Email</td><td>${esc(u.email||'—')}</td></tr>
-      <tr><td style="color:var(--m)">Работа</td><td>${esc(u.work||'—')}</td></tr>
-      <tr><td style="color:var(--m)">Интересы</td><td>${esc(u.interests||'—')}</td></tr>
-      <tr><td style="color:var(--m)">Соцсети</td><td>${esc(u.social_links||'—')}</td></tr>
-      <tr><td style="color:var(--m)">О себе</td><td>${esc(u.about||'—')}</td></tr>
-      <tr><td style="color:var(--m)">Тариф</td><td><span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[u.tariff]}">${{free:'Бесплатный',tier1:'Уровень 1',tier2:'Уровень 2'}[u.tariff]}</span>${u.tariff_expires?' до '+fmt(u.tariff_expires):''}</td></tr>
-    </table>
-    ${u.events?.length?`<div style="margin-bottom:12px"><div style="font-weight:700;font-size:12px;margin-bottom:4px">Мероприятия (${u.events.length}):</div>${u.events.map(ev=>`<div style="padding:3px 0;font-size:11px;border-bottom:1px solid var(--bd)">📅 ${esc(ev.title)} — ${fmt(ev.date)} <span class="bg2 ${ev.status==='registered'?'bg-g':'bg-r'}">${ev.status}</span></div>`).join('')}</div>`:''}
-    <div style="margin-bottom:8px"><label class="lb">📨 Отправить уведомление в Telegram</label>
-    <div class="rw"><input class="in" id="nm-${u.id}" placeholder="Текст сообщения..." style="margin:0;flex:1"><button class="bt bg" onclick="sndN(${u.id})" style="flex:0 0 auto">Отправить</button></div></div>
-    <button class="bt bs" onclick="M=null;render()">Закрыть</button>
+  if(M.t==='ud'){const u=M.u;return`<div class="mbg" onclick="if(event.target===this){M=null;R()}"><div class="mdl">
+    <h2>Профиль ${X}</h2>
+    <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--a);overflow:hidden;flex-shrink:0">${u.photo_url||u.avatar_url?`<img src="${E(u.photo_url||u.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:(u.full_name||'?').charAt(0).toUpperCase()}</div>
+      <div><div style="font-weight:700">${E(u.full_name)}</div><div style="font-size:11px;color:var(--m)">@${E(u.username||'—')} • ${E(u.city_name||'—')}</div></div></div>
+    <table class="tbl" style="margin-bottom:10px"><tr><td style="color:var(--m);width:90px">Телефон</td><td>${E(u.phone||'—')}</td></tr><tr><td style="color:var(--m)">Email</td><td>${E(u.email||'—')}</td></tr><tr><td style="color:var(--m)">Работа</td><td>${E(u.work||'—')}</td></tr><tr><td style="color:var(--m)">Интересы</td><td>${E(u.interests||'—')}</td></tr><tr><td style="color:var(--m)">Соцсети</td><td>${E(u.social_links||'—')}</td></tr><tr><td style="color:var(--m)">О себе</td><td>${E(u.about||'—')}</td></tr><tr><td style="color:var(--m)">Логин</td><td>${E(u.login||'—')}</td></tr><tr><td style="color:var(--m)">Тариф</td><td><span class="bg2 ${{free:'bg-r',tier1:'bg-y',tier2:'bg-g'}[u.tariff]}">${{free:'Бесплатный',tier1:'Уровень 1',tier2:'Уровень 2'}[u.tariff]}</span>${u.tariff_expires?' до '+F(u.tariff_expires):''}</td></tr></table>
+    ${u.events?.length?`<div style="margin-bottom:10px"><div style="font-weight:700;font-size:11px;margin-bottom:4px">Мероприятия:</div>${u.events.map(ev=>`<div class="tag" onclick="M=null;R();vPart(${ev.id})">📅 ${E(ev.title)} <span class="bg2 ${ev.status==='registered'?'bg-g':'bg-r'}" style="font-size:8px">${ev.status==='registered'?'✓':'✕'}</span></div>`).join('')}</div>`:''}
+    <div class="acts" style="margin-bottom:8px"><button class="bt ${u.is_admin?'bd':'bs'}" onclick="tgA(${u.id},${u.is_admin?0:1});M=null">${u.is_admin?'Снять админа':'Сделать админом'}</button></div>
+    <label class="lb">📨 Уведомление в Telegram</label>
+    <div class="rw"><input class="in" id="nm-${u.id}" placeholder="Текст..." style="margin:0;flex:1"><button class="bt bg" onclick="sndN(${u.id})" style="flex:0 0 auto">📨</button></div>
+    <div style="margin-top:8px"><button class="bt bs" onclick="M=null;R()">Закрыть</button></div>
   </div></div>`}
 
-  if(M.t==='pg'){const p=M.pg;return`<div class="mbg" onclick="if(event.target===this){M=null;render()}"><div class="mdl">
-    <h2>${esc(p.title)} ${cls}</h2>
-    <label class="lb">Заголовок</label><input class="in" id="pt" value="${esc(p.title)}">
-    <label class="lb">Контент (HTML — можно вставлять &lt;img src="..."&gt;)</label>
-    <textarea class="in" id="pc" style="min-height:180px">${esc(p.content||'')}</textarea>
-    <div class="acts" style="margin-top:8px"><button class="bt bp" onclick="sPg()">💾 Сохранить</button><button class="bt bs" onclick="M=null;render()">Отмена</button></div>
+  if(M.t==='pg'){const p=M.pg;return`<div class="mbg" onclick="if(event.target===this){M=null;R()}"><div class="mdl">
+    <h2>${E(p.title)} ${X}</h2>
+    <label class="lb">Изображение страницы</label>
+    ${p.image_url?`<div style="margin-bottom:6px"><img src="${E(p.image_url)}" style="max-width:100%;max-height:120px;border-radius:6px;border:1px solid var(--bd)"></div>`:''}
+    <input class="in" type="file" id="pg-img" accept="image/*" style="padding:5px">
+    <button class="bt bb" onclick="uplPgImg()" style="margin-bottom:10px">📤 Загрузить изображение</button>
+    <label class="lb">Заголовок</label><input class="in" id="pt" value="${E(p.title)}">
+    <label class="lb">Контент (HTML)</label><textarea class="in" id="pc" style="min-height:160px">${E(p.content||'')}</textarea>
+    <div class="acts" style="margin-top:8px"><button class="bt bp" onclick="sPg()">💾 Сохранить</button><button class="bt bs" onclick="M=null;R()">Отмена</button></div>
   </div></div>`}
-  return''
-}
+  return'';}
 
 // ===== RENDER =====
-function render(){
-  const tabs=[{id:'events',l:'📅 Мероприятия'},{id:'users',l:'👥 Пользователи'},{id:'tariffs',l:'⭐ Тарифы'},{id:'pages',l:'📄 Страницы'},{id:'cities',l:'🏙 Города'}];
-  let c='';
-  if(S.tab==='events')c=rEvents();else if(S.tab==='users')c=rUsers();else if(S.tab==='tariffs')c=rTariffs();else if(S.tab==='pages')c=rPages();else if(S.tab==='cities')c=rCities();
-
+function R(){
+  const tabs=[{id:'moderation',l:'📋 Модерация',c:S.pn.length},{id:'events',l:'📅 Мероприятия'},{id:'users',l:'👥 Пользователи'},{id:'tariffs',l:'⭐ Тарифы'},{id:'pages',l:'📄 Страницы'},{id:'cities',l:'🏙 Города'}];
+  let content='';
+  if(TAB==='moderation')content=rMod();else if(TAB==='events')content=rEv();else if(TAB==='users')content=rUs();else if(TAB==='tariffs')content=rTf();else if(TAB==='pages')content=rPg();else if(TAB==='cities')content=rCt();
   document.getElementById('app').innerHTML=`<div class="ly">
-    <div class="sb"><h1>🔧 SingleChel</h1>${tabs.map(t=>`<button class="ni ${S.tab===t.id?'ac':''}" onclick="setTab('${t.id}')">${t.l}</button>`).join('')}<div style="position:absolute;bottom:0;left:0;right:0;padding:10px 14px;border-top:1px solid var(--bd)"><button class="bt bd" style="width:100%;font-size:11px" onclick="logout()">🚪 Выйти</button></div></div>
-    <div class="mn">
-      <div class="sts">
-        <div class="st"><div class="n">${S.events.length}</div><div class="l">Мероприятий</div></div>
-        <div class="st"><div class="n">${S.users.length}</div><div class="l">Пользователей</div></div>
-        <div class="st"><div class="n">${S.users.filter(u=>u.tariff!=='free').length}</div><div class="l">Платных</div></div>
-        <div class="st"><div class="n">${S.cities.length}</div><div class="l">Городов</div></div>
-      </div>${c}</div></div>
-    ${rModal()}
-    ${S.toast?`<div class="tst tst-${S.toast.t}">${esc(S.toast.m)}</div>`:''}`;
+    <div class="sb"><h1>🔧 SingleChel</h1>${tabs.map(t=>`<button class="ni ${TAB===t.id?'ac':''}" onclick="sT('${t.id}')">${t.l}${t.c?`<span class="cnt">${t.c}</span>`:''}</button>`).join('')}
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:8px 14px;border-top:1px solid var(--bd)"><button class="bt bd" style="width:100%" onclick="sessionStorage.removeItem('as');sL()">🚪 Выйти</button></div></div>
+    <div class="mn"><div class="sts">
+      <div class="st"><div class="n">${S.pn.length}</div><div class="l">На модерации</div></div>
+      <div class="st"><div class="n">${S.ev.length}</div><div class="l">Мероприятий</div></div>
+      <div class="st"><div class="n">${S.us.length}</div><div class="l">Пользователей</div></div>
+      <div class="st"><div class="n">${S.ct.length}</div><div class="l">Городов</div></div>
+    </div>${content}</div></div>${rM()}
+    ${S.t?`<div class="tst" style="background:${S.t.t==='er'?'var(--a)':'var(--ok)'}">${E(S.t.m)}</div>`:''}`;
 }
-// Initial check: if we have saved secret, try loading; otherwise show login
-if(ADMIN_SECRET){load()}else{showLogin()}
-</script>
-</body>
-</html>
+if(AS)load();else sL();
+</script></body></html>
