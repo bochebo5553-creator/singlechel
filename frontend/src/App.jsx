@@ -85,15 +85,26 @@ export default function App() {
       } catch {}
     }
 
-    // Check Telegram user status
+    // Check Telegram user status — approved users go STRAIGHT to main (no login needed)
     try {
       const statusData = await api.get('/api/auth/status');
-      if (statusData.status === 'approved' && statusData.hasLogin) {
+      if (statusData.status === 'approved') {
+        // User is approved — fetch full profile and enter app directly
+        const meData = await api.get('/api/auth/me');
+        if (meData.user) {
+          setUser(meData.user);
+          setSelectedCity(meData.user.city_id || 1);
+          // Save their login as token for future sessions
+          if (meData.user.login) {
+            setAuthToken(meData.user.login);
+          }
+          setScreen('main');
+          return;
+        }
+        // Fallback: if /me didn't work but status is approved, show login
         setScreen('login');
       } else if (statusData.status === 'pending') {
         setScreen('pending');
-      } else if (statusData.status === 'rejected') {
-        setScreen('register'); // Let them re-register
       } else {
         setScreen('register');
       }

@@ -51,7 +51,7 @@ async function GET(u){const r=await fetch(u,{headers:gH()});if(r.status===401||r
 async function POST(u,b){const r=await fetch(u,{method:'POST',headers:gH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
 async function PUT(u,b){const r=await fetch(u,{method:'PUT',headers:gH(),body:JSON.stringify(b)});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
 async function DEL(u){const r=await fetch(u,{method:'DELETE',headers:gH()});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
-async function UPL(u,fd){const r=await fetch(u,{method:'POST',headers:gHU(),body:fd});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
+async function UPL(u,fd,method='POST'){const r=await fetch(u,{method:method,headers:gHU(),body:fd});if(r.status===401||r.status===403){sL('Нет доступа');return{}}return r.json()}
 
 let S={ev:[],us:[],ct:[],tf:[],pn:[],t:null,us_s:'',us_c:'',ev_c:''},M=null;
 
@@ -116,7 +116,7 @@ function rEv(){
 function oEvM(id){const ev=id?S.ev.find(e=>e.id===id):null;M={t:'ev',d:ev?{...ev}:{title:'',description:'',date:'',address:'',map_link:'',price:0,is_free:true,participant_limit:0,city_id:1,is_active:true}};R()}
 async function sEv(){const d=M.d,fd=new FormData();['title','description','date','address','map_link'].forEach(k=>fd.append(k,d[k]||''));fd.append('is_free',d.is_free?'true':'false');fd.append('price',d.is_free?'0':String(d.price||0));fd.append('participant_limit',String(d.participant_limit||0));fd.append('city_id',String(d.city_id||1));fd.append('is_active',d.is_active!==false?'true':'false');
 const f=document.getElementById('ev-img');if(f?.files?.[0])fd.append('image',f.files[0]);
-if(d.id)await UPL('/api/admin/events/'+d.id,fd);else await UPL('/api/admin/events',fd);M=null;toast('Мероприятие сохранено!');load()}
+if(d.id)await UPL('/api/admin/events/'+d.id,fd,'PUT');else await UPL('/api/admin/events',fd);M=null;toast('Мероприятие сохранено!');load()}
 async function dEv(id){await DEL('/api/admin/events/'+id);toast('Удалено');load()}
 
 // Participants modal with download + clickable names
