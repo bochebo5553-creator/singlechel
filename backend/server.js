@@ -73,29 +73,36 @@ app.post('/api/admin/login', (req, res) => {
 app.post('/api/auth/register', (req, res) => {
   try {
     const {telegram_id,username,full_name,phone,email,country,city_id,consent_data,consent_notifications,avatar_url} = req.body;
-    if (!telegram_id||!full_name) return res.status(400).json({error:'Missing fields'});
+    if (!telegram_id||!full_name) return res.status(400).json({error:'Заполните имя'});
     const existing = db.prepare('SELECT * FROM users WHERE telegram_id=?').get(String(telegram_id));
     if (existing) {
-      return res.json({user:existing, status: existing.status});
+      return res.json({user:existing, status: existing.status || 'pending'});
     }
     // First user becomes approved admin automatically
     const cnt = db.prepare('SELECT COUNT(*) as c FROM users').get();
     const isFirst = (!cnt||cnt.c===0);
-    db.prepare('INSERT INTO users (telegram_id,username,full_name,phone,email,country,city_id,avatar_url,consent_data,consent_notifications,is_registered,is_admin,status,first_login_done) VALUES(?,?,?,?,?,?,?,?,?,?,1,?,?,?)')
-      .run(String(telegram_id),username||null,full_name,phone||null,email||null,country||'Россия',city_id||1,avatar_url||null,consent_data?1:0,consent_notifications?1:0,isFirst?1:0,isFirst?'approved':'pending',isFirst?1:0);
+    db.prepare('INSERT INTO users (telegram_id,username,full_name,phone,email,country,city_id,avatar_url,consent_data,consent_notifications,is_registered,is_admin,status) VALUES(?,?,?,?,?,?,?,?,?,?,1,?,?)')
+      .run(String(telegram_id),username||null,full_name,phone||null,email||null,country||'Россия',city_id||1,avatar_url||null,consent_data?1:0,consent_notifications?1:0,isFirst?1:0,isFirst?'approved':'pending');
+    // Set first_login_done for auto-approved first user
+    if (isFirst) {
+      try { db.prepare("UPDATE users SET first_login_done=1 WHERE telegram_id=?").run(String(telegram_id)); } catch {}
+    }
     const user = db.prepare('SELECT * FROM users WHERE telegram_id=?').get(String(telegram_id));
     db.save();
     if (isFirst) console.log('✅ First user auto-approved as admin:', full_name);
-    res.json({user, status: user.status});
-  } catch(e) { res.status(500).json({error:e.message}); }
+    res.json({user, status: user.status || 'pending'});
+  } catch(e) {
+    console.error('Registration error:', e.message);
+    res.status(500).json({error:e.message});
+  }
 });
 
 // Check user status by telegram_id
 app.get('/api/auth/status', (req, res) => {
   if (!req.telegramUser) return res.json({status:'not_found'});
-  const user = db.prepare('SELECT id,status,login,full_name,first_login_done FROM users WHERE telegram_id=?').get(String(req.telegramUser.id));
+  const user = db.prepare('SELECT * FROM users WHERE telegram_id=?').get(String(req.telegramUser.id));
   if (!user) return res.json({status:'not_found'});
-  res.json({status:user.status, hasLogin:!!user.login, firstLoginDone:!!user.first_login_done, name:user.full_name});
+  res.json({status:user.status||'pending', hasLogin:!!user.login, firstLoginDone:!!(user.first_login_done), name:user.full_name});
 });
 
 // Login with login/password — sets first_login_done
@@ -105,11 +112,7 @@ app.post('/api/auth/login', (req, res) => {
   const user = db.prepare("SELECT * FROM users WHERE login=? AND password=? AND status='approved'").get(login, password);
   if (!user) return res.status(401).json({error:'Неверный логин или пароль'});
   // Mark first login as done
-  if (!user.first_login_done) {
-    db.prepare('UPDATE users SET first_login_done=1,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(user.id);
-    db.save();
-    user.first_login_done = 1;
-  }
+  try { db.prepare('UPDATE users SET first_login_done=1,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(user.id); db.save(); } catch {}
   res.json({user, token: user.login});
 });
 
