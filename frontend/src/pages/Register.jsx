@@ -29,13 +29,17 @@ export default function RegisterScreen({ navigate, cities, showNotice }) {
         country: form.country, city_id: form.city_id,
         consent_data: true, consent_notifications: true, avatar_url: tgUser.photo_url||null
       });
-      if (res.status === 'approved') {
-        // First user — auto-approved, go to login
+      if (res.error) {
+        showNotice('Ошибка: ' + res.error, 'error');
+      } else if (res.status === 'approved') {
         navigate('login');
       } else {
         navigate('pending');
       }
-    } catch { showNotice('Ошибка регистрации','error'); }
+    } catch (e) { 
+      console.error('Registration error:', e);
+      showNotice('Ошибка регистрации: ' + (e.message || 'сервер недоступен'), 'error'); 
+    }
     setLoading(false);
   }
 
