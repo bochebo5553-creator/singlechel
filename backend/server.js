@@ -36,7 +36,8 @@ function validateTelegram(initData) {
 
 function authMW(req, res, next) {
   // 1) Telegram WebApp
-  const td = req.headers['x-telegram-init-data'];
+  let td = req.headers['x-telegram-init-data'];
+  if (td) { try { td = decodeURIComponent(td); } catch {} }
   const tu = validateTelegram(td);
   if (tu) { req.telegramUser = tu; return next(); }
   // 2) Login/password session token

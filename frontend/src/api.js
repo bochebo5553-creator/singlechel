@@ -5,7 +5,7 @@ try { if (window.Telegram?.WebApp?.initData) initData = window.Telegram.WebApp.i
 
 const headers = () => {
   const h = { 'Content-Type': 'application/json' };
-  if (initData) h['X-Telegram-Init-Data'] = initData;
+  if (initData) h['X-Telegram-Init-Data'] = encodeURIComponent(initData);
   const token = window.__SC_TOKEN || localStorage.getItem('sc_token');
   if (token) h['X-Auth-Token'] = token;
   if (!initData && !token) h['X-Dev-User-Id'] = '123456789';
@@ -19,7 +19,7 @@ export const api = {
   async del(url) { const r = await fetch(BASE+url, {method:'DELETE',headers:headers()}); return r.json(); },
   async upload(url, fd) {
     const h = {};
-    if (initData) h['X-Telegram-Init-Data'] = initData;
+    if (initData) h['X-Telegram-Init-Data'] = encodeURIComponent(initData);
     const token = window.__SC_TOKEN || localStorage.getItem('sc_token');
     if (token) h['X-Auth-Token'] = token;
     if (!initData && !token) h['X-Dev-User-Id'] = '123456789';
