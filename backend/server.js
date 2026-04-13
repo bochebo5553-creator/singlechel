@@ -35,11 +35,9 @@ function validateTelegram(initData) {
 }
 
 function authMW(req, res, next) {
-  // 1) Telegram WebApp
-  let td = req.headers['x-telegram-init-data'];
-  if (td) { try { td = decodeURIComponent(td); } catch {} }
-  const tu = validateTelegram(td);
-  if (tu) { req.telegramUser = tu; return next(); }
+  // 1) Telegram User ID (simple, mobile-safe)
+  const tgUserId = req.headers['x-telegram-user-id'];
+  if (tgUserId) { req.telegramUser = { id: tgUserId }; return next(); }
   // 2) Login/password session token
   const token = req.headers['x-auth-token'];
   if (token) {
