@@ -1,14 +1,26 @@
 const BASE = '';
 
+// Get Telegram user info
+let telegramUser = null;
 let initData = '';
-try { if (window.Telegram?.WebApp?.initData) initData = window.Telegram.WebApp.initData; } catch {}
+try {
+  if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+    telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+  }
+  if (window.Telegram?.WebApp?.initData) {
+    initData = window.Telegram.WebApp.initData;
+  }
+} catch {}
 
 const headers = () => {
   const h = { 'Content-Type': 'application/json' };
-  if (initData) h['X-Telegram-Init-Data'] = encodeURIComponent(initData);
+  // Send telegram user ID as simple number (no encoding issues)
+  if (telegramUser?.id) {
+    h['X-Telegram-User-Id'] = String(telegramUser.id);
+  }
   const token = window.__SC_TOKEN || localStorage.getItem('sc_token');
   if (token) h['X-Auth-Token'] = token;
-  if (!initData && !token) h['X-Dev-User-Id'] = '123456789';
+  if (!telegramUser && !token) h['X-Dev-User-Id'] = '123456789';
   return h;
 };
 
@@ -19,16 +31,16 @@ export const api = {
   async del(url) { const r = await fetch(BASE+url, {method:'DELETE',headers:headers()}); return r.json(); },
   async upload(url, fd) {
     const h = {};
-    if (initData) h['X-Telegram-Init-Data'] = encodeURIComponent(initData);
+    if (telegramUser?.id) h['X-Telegram-User-Id'] = String(telegramUser.id);
     const token = window.__SC_TOKEN || localStorage.getItem('sc_token');
     if (token) h['X-Auth-Token'] = token;
-    if (!initData && !token) h['X-Dev-User-Id'] = '123456789';
+    if (!telegramUser && !token) h['X-Dev-User-Id'] = '123456789';
     const r = await fetch(BASE+url, {method:'POST',headers:h,body:fd}); return r.json();
   }
 };
 
 export function getTelegramUser() {
-  try { if (window.Telegram?.WebApp?.initDataUnsafe?.user) return window.Telegram.WebApp.initDataUnsafe.user; } catch {}
+  if (telegramUser) return telegramUser;
   return { id: 123456789, first_name: 'Тестовый', last_name: 'Пользователь', username: 'testuser' };
 }
 
