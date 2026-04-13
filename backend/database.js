@@ -64,6 +64,7 @@ async function initDB() {
       is_registered INTEGER DEFAULT 0, is_admin INTEGER DEFAULT 0,
       status TEXT DEFAULT 'pending',
       login TEXT UNIQUE, password TEXT,
+      first_login_done INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (city_id) REFERENCES cities(id)
     );
@@ -93,6 +94,7 @@ async function initDB() {
   try { w.exec("ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'pending'"); } catch {}
   try { w.exec("ALTER TABLE users ADD COLUMN login TEXT UNIQUE"); } catch {}
   try { w.exec("ALTER TABLE users ADD COLUMN password TEXT"); } catch {}
+  try { w.exec("ALTER TABLE users ADD COLUMN first_login_done INTEGER DEFAULT 0"); } catch {}
   try { w.exec("ALTER TABLE pages ADD COLUMN image_url TEXT"); } catch {}
 
   // Seed

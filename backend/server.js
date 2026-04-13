@@ -81,8 +81,8 @@ app.post('/api/auth/register', (req, res) => {
     // First user becomes approved admin automatically
     const cnt = db.prepare('SELECT COUNT(*) as c FROM users').get();
     const isFirst = (!cnt||cnt.c===0);
-    db.prepare('INSERT INTO users (telegram_id,username,full_name,phone,email,country,city_id,avatar_url,consent_data,consent_notifications,is_registered,is_admin,status) VALUES(?,?,?,?,?,?,?,?,?,?,1,?,?)')
-      .run(String(telegram_id),username||null,full_name,phone||null,email||null,country||'Россия',city_id||1,avatar_url||null,consent_data?1:0,consent_notifications?1:0,isFirst?1:0,isFirst?'approved':'pending');
+    db.prepare('INSERT INTO users (telegram_id,username,full_name,phone,email,country,city_id,avatar_url,consent_data,consent_notifications,is_registered,is_admin,status,first_login_done) VALUES(?,?,?,?,?,?,?,?,?,?,1,?,?,?)')
+      .run(String(telegram_id),username||null,full_name,phone||null,email||null,country||'Россия',city_id||1,avatar_url||null,consent_data?1:0,consent_notifications?1:0,isFirst?1:0,isFirst?'approved':'pending',isFirst?1:0);
     const user = db.prepare('SELECT * FROM users WHERE telegram_id=?').get(String(telegram_id));
     db.save();
     if (isFirst) console.log('✅ First user auto-approved as admin:', full_name);
@@ -93,17 +93,23 @@ app.post('/api/auth/register', (req, res) => {
 // Check user status by telegram_id
 app.get('/api/auth/status', (req, res) => {
   if (!req.telegramUser) return res.json({status:'not_found'});
-  const user = db.prepare('SELECT id,status,login,full_name FROM users WHERE telegram_id=?').get(String(req.telegramUser.id));
+  const user = db.prepare('SELECT id,status,login,full_name,first_login_done FROM users WHERE telegram_id=?').get(String(req.telegramUser.id));
   if (!user) return res.json({status:'not_found'});
-  res.json({status:user.status, hasLogin:!!user.login, name:user.full_name});
+  res.json({status:user.status, hasLogin:!!user.login, firstLoginDone:!!user.first_login_done, name:user.full_name});
 });
 
-// Login with login/password
+// Login with login/password — sets first_login_done
 app.post('/api/auth/login', (req, res) => {
   const {login, password} = req.body;
   if (!login||!password) return res.status(400).json({error:'Введите логин и пароль'});
   const user = db.prepare("SELECT * FROM users WHERE login=? AND password=? AND status='approved'").get(login, password);
   if (!user) return res.status(401).json({error:'Неверный логин или пароль'});
+  // Mark first login as done
+  if (!user.first_login_done) {
+    db.prepare('UPDATE users SET first_login_done=1,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(user.id);
+    db.save();
+    user.first_login_done = 1;
+  }
   res.json({user, token: user.login});
 });
 
@@ -308,6 +314,24 @@ app.get('/api/admin/users', reqAdmin, (req,res)=>{
 });
 app.put('/api/admin/users/:id/tariff', reqAdmin, (req,res)=>{db.prepare('UPDATE users SET tariff=?,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(req.body.tariff,parseInt(req.params.id));db.save();res.json({success:true})});
 app.put('/api/admin/users/:id/admin', reqAdmin, (req,res)=>{db.prepare('UPDATE users SET is_admin=?,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(req.body.is_admin?1:0,parseInt(req.params.id));db.save();res.json({success:true})});
+
+// Admin: update user credentials
+app.put('/api/admin/users/:id/credentials', reqAdmin, (req,res)=>{
+  const {login,password} = req.body;
+  if (!login||!password) return res.status(400).json({error:'Логин и пароль обязательны'});
+  const exists = db.prepare('SELECT id FROM users WHERE login=? AND id!=?').get(login, parseInt(req.params.id));
+  if (exists) return res.status(400).json({error:'Логин уже занят'});
+  db.prepare('UPDATE users SET login=?,password=?,updated_at=CURRENT_TIMESTAMP WHERE id=?').run(login,password,parseInt(req.params.id));
+  db.save(); res.json({success:true});
+});
+
+// Admin: delete user
+app.delete('/api/admin/users/:id', reqAdmin, (req,res)=>{
+  const uid = parseInt(req.params.id);
+  db.prepare('DELETE FROM event_participants WHERE user_id=?').run(uid);
+  db.prepare('DELETE FROM users WHERE id=?').run(uid);
+  db.save(); res.json({success:true});
+});
 
 // ===== ADMIN: TARIFFS / PAGES / CITIES =====
 app.get('/api/admin/tariffs', reqAdmin, (req,res)=>{const t=db.prepare('SELECT * FROM tariff_plans ORDER BY price_monthly ASC').all();t.forEach(x=>{try{x.features=JSON.parse(x.features)}catch{x.features=[]}});res.json({tariffs:t})});
